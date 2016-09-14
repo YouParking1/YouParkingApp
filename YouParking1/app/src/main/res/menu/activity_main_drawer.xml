@@ -8,7 +8,6 @@
             android:title="Home" />
         <item
             android:id="@+id/nav_vehicles"
-            android:icon="@drawable/ic_vehicles"
             android:title="Vehicles" />
         <item
             android:id="@+id/nav_my_bids"
@@ -16,11 +15,9 @@
             android:title="My Bids" />
         <item
             android:id="@+id/nav_find_now"
-            android:icon="@drawable/ic_find_now"
             android:title="Find Now" />
         <item
             android:id="@+id/nav_hold_spot"
-            android:icon="@drawable/ic_hold_spot"
             android:title="Hold Spot" />
         <item
             android:id="@+id/nav_find_later"

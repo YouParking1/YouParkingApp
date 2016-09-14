@@ -23,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 /**
@@ -33,7 +34,7 @@ import com.google.android.gms.maps.model.Marker;
  * Use the {@link GMapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GMapFragment extends android.app.Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+public class GMapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
             GoogleApiClient.OnConnectionFailedListener, LocationListener{
 
     private GoogleMap mMap;
@@ -80,24 +81,28 @@ public class GMapFragment extends android.app.Fragment implements OnMapReadyCall
         return fragment;
     }
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//
-//
-//
-//    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+
+
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gmap, container, false);
+        View view =  inflater.inflate(R.layout.fragment_gmap, container, false);
+
+
+
+        return view;
 
     }
 
@@ -105,8 +110,9 @@ public class GMapFragment extends android.app.Fragment implements OnMapReadyCall
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MapFragment fragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment fragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map222);
         fragment.getMapAsync(this);
+
 
 //        if (mGoogleApiClient == null) {
 //            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
@@ -169,10 +175,14 @@ public class GMapFragment extends android.app.Fragment implements OnMapReadyCall
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
+
         LatLng troy = new LatLng(31.7988, -85.9574);
+        Marker marker;
+        mMap.addMarker(new MarkerOptions().position(troy));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(troy));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
     }
