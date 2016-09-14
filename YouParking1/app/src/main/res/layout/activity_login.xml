@@ -79,6 +79,8 @@
         android:layout_alignEnd="@+id/btnLogin"
         android:layout_toRightOf="@+id/noAccount"
         android:layout_toEndOf="@+id/noAccount"
-        android:linksClickable="true" />
+        android:linksClickable="true"
+        android:textColor="#278fda"
+        android:onClick="goToRegistration" />
 
 </RelativeLayout>

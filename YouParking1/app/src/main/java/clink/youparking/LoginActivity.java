@@ -29,16 +29,12 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         emailEt = (EditText) findViewById(R.id.email);
         passwordEt = (EditText) findViewById(R.id.pass);
         TextView tvSignUp =(TextView) findViewById(R.id.tvSignUp);
+    }
 
-        //listener for "SignUp!" to link to register page
-       /* tvSignUp.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent RegisterIntent = new Intent (MainActivity.this, RegisterActivity.class);
-                MainActivity.this.startActivity(RegisterIntent
-                );
-            }
-        });*/
+    public void goToRegistration(View view)
+    {
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
     }
 
     public void OnLogin(View view) {
