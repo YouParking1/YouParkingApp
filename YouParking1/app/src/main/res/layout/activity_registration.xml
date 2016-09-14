@@ -6,7 +6,8 @@
     android:fillViewport="true">
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:background="#fff">
+        android:layout_height="wrap_content"
+        android:background="#fff">
 
         <!--  Header  Starts-->
         <LinearLayout android:id="@+id/header"
@@ -33,45 +34,54 @@
             android:layout_below="@id/header">
 
             <!-- Sign Up Logo -->
-            <!-- Full Name Label -->
+            <!-- First Name Label -->
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
                 android:layout_marginTop="20dip"
-                android:text="Full Name"/>
-            <EditText android:id="@+id/reg_fullname"
+                android:text="@string/reg_first_name"/>
+            <EditText android:id="@+id/reg_first_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true" />
+            <!-- Last Name Label -->
+            <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:layout_marginTop="20dip"
+                android:text="@string/reg_last_name"/>
+            <EditText android:id="@+id/reg_last_name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true" />
             <!-- School Label -->
-            <TextView android:layout_width="fill_parent"
+            <TextView
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
                 android:layout_marginTop="20dip"
-                android:text="University"/>
-            <EditText android:id="@+id/university"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:layout_marginTop="5dip"
-                android:layout_marginBottom="20dip"/>
+                android:text="@string/reg_university"/>
+            <AutoCompleteTextView android:id="@+id/reg_university"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
             <!--  Email Label -->
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
-                android:text="Email"/>
+                android:layout_marginTop="20dip"
+                android:text="@string/reg_email"/>
             <EditText android:id="@+id/reg_email"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
                 android:singleLine="true"
                 android:layout_marginBottom="20dip"
-                android:hint="(.edu)" />
+                android:hint="@string/reg_hint" />
             <!-- Password Label -->
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
-                android:text="Password"/>
+                android:text="@string/reg_password"/>
             <EditText android:id="@+id/reg_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -83,7 +93,7 @@
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
-                android:text="Confirm Password"/>
+                android:text="@string/reg_confirm_password"/>
             <EditText android:id="@+id/reg_confirm_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -95,7 +105,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip"
-                android:text="Register Vehicle"
+                android:text="@string/reg_btn"
                 android:onClick="goToVehicleRegistration" />
         </LinearLayout>
         <!-- Registration Form Ends -->
