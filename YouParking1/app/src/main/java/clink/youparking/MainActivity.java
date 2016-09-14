@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, VehiclesFragment.OnFragmentInteractionListener,
         MyBidsFragment.OnFragmentInteractionListener, FindNowFragment.OnFragmentInteractionListener,
         HoldSpotFragment.OnFragmentInteractionListener, FindLaterFragment.OnFragmentInteractionListener, HoldLaterFragment.OnFragmentInteractionListener,
-        SignOutFragment.OnFragmentInteractionListener {
+        SignOutFragment.OnFragmentInteractionListener, GMapFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_find_now) {
             fragmentClass = FindNowFragment.class;
         } else if (id == R.id.nav_hold_spot) {
-            fragmentClass = HoldSpotFragment.class;
+            fragmentClass = GMapFragment.class;
         } else if (id == R.id.nav_find_later) {
             fragmentClass = FindLaterFragment.class;
         } else if (id == R.id.nav_hold_later) {
