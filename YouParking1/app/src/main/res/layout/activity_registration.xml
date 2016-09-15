@@ -18,9 +18,10 @@
             android:paddingBottom="5dip">
             <!-- Logo Start-->
             <ImageView android:src="@mipmap/ic_parking_logo"
+                android:contentDescription="@string/reg_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="150dip"/>
+                android:layout_marginStart="150dip" />
             <!-- Logo Ends -->
         </LinearLayout>
 
@@ -39,40 +40,48 @@
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
                 android:layout_marginTop="20dip"
-                android:text="@string/reg_first_name"/>
+                android:text="@string/reg_first_name" />
             <EditText android:id="@+id/reg_first_name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true" />
+                android:inputType="textPersonName"
+                android:singleLine="true"
+                android:digits="@string/allow_only_alpha" />
             <!-- Last Name Label -->
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
                 android:layout_marginTop="20dip"
-                android:text="@string/reg_last_name"/>
+                android:text="@string/reg_last_name" />
             <EditText android:id="@+id/reg_last_name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:inputType="textPersonName"
+                android:digits="@string/allow_only_alpha"/>
             <!-- School Label -->
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
                 android:layout_marginTop="20dip"
-                android:text="@string/reg_university"/>
+                android:text="@string/reg_university" />
             <AutoCompleteTextView android:id="@+id/reg_university"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:digits="@string/allow_alpha_and_special_characters"/>
             <!--  Email Label -->
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
                 android:layout_marginTop="20dip"
-                android:text="@string/reg_email"/>
+                android:text="@string/reg_email" />
             <EditText android:id="@+id/reg_email"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:digits="@string/allow_characters_for_email"
                 android:layout_marginTop="5dip"
                 android:singleLine="true"
                 android:layout_marginBottom="20dip"
@@ -81,25 +90,25 @@
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
-                android:text="@string/reg_password"/>
+                android:text="@string/reg_password" />
             <EditText android:id="@+id/reg_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:password="true"
+                android:inputType="textPassword"
                 android:singleLine="true"
                 android:layout_marginTop="5dip"
-                android:layout_marginBottom="20dip"/>
+                android:layout_marginBottom="20dip" />
             <!-- Confirm Password Label -->
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
-                android:text="@string/reg_confirm_password"/>
+                android:text="@string/reg_confirm_password" />
             <EditText android:id="@+id/reg_confirm_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:password="true"
+                android:inputType="textPassword"
                 android:singleLine="true"
-                android:layout_marginTop="5dip"/>
+                android:layout_marginTop="5dip" />
             <!-- Register Button -->
             <Button android:id="@+id/btnRegister"
                 android:layout_width="fill_parent"
