@@ -44,6 +44,7 @@ public class RegistrationActivity extends AppCompatActivity implements AsyncResp
         String confirmpassword = ConfirmPass.getText().toString();
         String university = University.getText().toString();
 
+        if (!password.equals(confirmpassword))
         {
             Context context = getApplicationContext();
             CharSequence text = "Passwords do not match!";
@@ -54,6 +55,7 @@ public class RegistrationActivity extends AppCompatActivity implements AsyncResp
         }
         else if (!(email.toUpperCase().contains(".EDU") && email.contains("@"))){
             Context context = getApplicationContext();
+            CharSequence text = "Invalid Email format!";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
