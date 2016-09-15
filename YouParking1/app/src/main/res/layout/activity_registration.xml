@@ -63,7 +63,7 @@
                 android:text="@string/reg_university"/>
             <AutoCompleteTextView android:id="@+id/reg_university"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
             <!--  Email Label -->
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -108,10 +108,5 @@
                 android:text="@string/reg_btn"
                 android:onClick="goToVehicleRegistration" />
         </LinearLayout>
-        <!-- Registration Form Ends -->
     </RelativeLayout>
 </ScrollView>
-
-
-
-

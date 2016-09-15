@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Spinner;
-
-import java.util.Arrays;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -18,7 +15,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.universities, android.R.layout.simple_spinner_item);
+                R.array.universities, R.layout.dropdown_list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.reg_university);
@@ -31,3 +28,5 @@ public class RegistrationActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+
+
