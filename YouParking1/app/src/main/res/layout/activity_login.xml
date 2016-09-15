@@ -26,6 +26,7 @@
         android:id="@+id/email"
         android:inputType="textEmailAddress"
         android:hint="@string/login_email_hint"
+        android:digits="@string/allow_characters_for_email"
         android:layout_above="@+id/pass"
         android:layout_alignEnd="@+id/pass"
         android:layout_alignParentStart="true" />
