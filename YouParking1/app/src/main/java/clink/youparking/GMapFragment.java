@@ -1,12 +1,16 @@
 package clink.youparking;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +93,17 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(10*1000)
+                .setFastestInterval(1*1000);
 
     }
 
@@ -140,7 +154,17 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSION_ACCESS_COARSE_LOCATION);
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        myLat = mLastLocation.getLatitude();
+        myLong = mLastLocation.getLongitude();
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        setCurrentLoc();
     }
 
     @Override
@@ -164,7 +188,6 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         LatLng troy = new LatLng(31.7988, -85.9574);
-        mMap.addMarker(new MarkerOptions().position(troy));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(troy));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
     }
@@ -184,10 +207,17 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
         void onFragmentInteraction(Uri uri);
     }
 
-    public void setCurrentLoc(double myLat, double myLong) {
+    public void setCurrentLoc() {
         LatLng loc = new LatLng(myLat, myLong);
+        User.myLocation = loc;
         mMap.addMarker(new MarkerOptions().position(loc));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+    }
+
+    @Override
+    public void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
     }
 }

@@ -3,6 +3,7 @@ package clink.youparking;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,18 +64,8 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        coords = (TextView) getView().findViewById(R.id.showCoords);
-//        Bundle extras = getActivity().getIntent().getExtras();
-//        if (extras != null) {
-//            mLat = extras.getDouble("mLat");
-//            mLong = extras.getDouble("mLong");
-//            coords.setText(extras.getDouble("mLat") + " " + extras.getDouble("mLong"));
-//        }
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -82,6 +73,19 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_hold_spot, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        coords = (TextView) getView().findViewById(R.id.showCoords);
+        if (User.myLocation != null)
+            coords.setText("COORDINATES ARE " + Double.toString(User.myLocation.latitude) + " " + Double.toString(User.myLocation.longitude));
+
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+        super.onViewCreated(view, savedInstanceState);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

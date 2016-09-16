@@ -31,15 +31,7 @@ import com.google.android.gms.location.LocationServices;
  * Use the {@link HoldSpotMapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HoldSpotMapFragment extends Fragment implements GMapFragment.OnFragmentInteractionListener,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
-
-    private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
-    private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 1;
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    private double myLat = 0, myLong = 0;
-    private LocationRequest mLocationRequest;
+public class HoldSpotMapFragment extends Fragment implements GMapFragment.OnFragmentInteractionListener {
 
     Fragment mapFrag;
     private MapInteraction mapInteraction;
@@ -85,23 +77,9 @@ public class HoldSpotMapFragment extends Fragment implements GMapFragment.OnFrag
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
-        mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10*1000)
-                .setFastestInterval(1*1000);
-
         mapFrag = new GMapFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.hold_map, mapFrag).commit();
-
-
     }
 
     @Override
@@ -152,40 +130,6 @@ public class HoldSpotMapFragment extends Fragment implements GMapFragment.OnFrag
     }
 
     /**
-     * Methods for ConnectionCallbacks and OnConnectionFailedListener
-     * @param bundle
-     */
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSION_ACCESS_COARSE_LOCATION);
-        }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        myLat = mLastLocation.getLatitude();
-        myLong = mLastLocation.getLongitude();
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-
-    }
-
-    /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
@@ -198,11 +142,5 @@ public class HoldSpotMapFragment extends Fragment implements GMapFragment.OnFrag
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    @Override
-    public void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
     }
 }
