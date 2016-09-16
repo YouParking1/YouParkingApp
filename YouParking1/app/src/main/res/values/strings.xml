@@ -72,8 +72,6 @@
     <string name="title_activity_maps">Map</string>
 
 
-
-
     <string-array name="universities">
 
         <item>University of Alabama at Birmingham</item>
@@ -7872,8 +7870,6 @@
 
         <item>Husson University</item>
     </string-array>
-    
-    
-    
-    
+
+
 </resources>

@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +20,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, VehiclesFragment.OnFragmentInteractionListener,
         MyBidsFragment.OnFragmentInteractionListener, FindNowFragment.OnFragmentInteractionListener,
         HoldSpotFragment.OnFragmentInteractionListener, FindLaterFragment.OnFragmentInteractionListener, HoldLaterFragment.OnFragmentInteractionListener,
-        SignOutFragment.OnFragmentInteractionListener, GMapFragment.OnFragmentInteractionListener {
+        SignOutFragment.OnFragmentInteractionListener, GMapFragment.OnFragmentInteractionListener, HoldSpotMapFragment.OnFragmentInteractionListener,
+        MapInteraction{
 
     TextView numTickets;
 
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_find_now) {
             fragmentClass = FindNowFragment.class;
         } else if (id == R.id.nav_hold_spot) {
-            fragmentClass = GMapFragment.class;
+            fragmentClass =HoldSpotMapFragment.class;
         } else if (id == R.id.nav_find_later) {
             fragmentClass = FindLaterFragment.class;
         } else if (id == R.id.nav_hold_later) {
@@ -137,6 +137,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void finishHold(View view) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new HoldSpotFragment()).commit();
+    }
+
+    @Override
+    public void recheckSpot(View view) {
 
     }
 }
