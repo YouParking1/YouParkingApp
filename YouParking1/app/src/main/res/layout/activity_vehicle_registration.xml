@@ -11,7 +11,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="Vehicle Registration"
         android:textSize="39dp"
         android:textAlignment="center"
@@ -25,10 +25,90 @@
         android:layout_height="wrap_content"
         android:text="Start Parking!"
         android:id="@+id/button"
-        android:layout_centerVertical="true"
+        android:onClick="goToHome"
+        android:layout_alignBottom="@+id/textView"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Make"
+        android:id="@+id/tvModel"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:onClick="goToHome" />
+        android:layout_alignEnd="@+id/button" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_below="@+id/tvModel"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/tvModel" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Model"
+        android:id="@+id/tvModel"
+        android:layout_below="@+id/editText"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/editText" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText2"
+        android:layout_below="@+id/tvModel"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/tvModel" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Year"
+        android:id="@+id/tvYear"
+        android:layout_below="@+id/editText2"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText3"
+        android:layout_below="@+id/tvYear"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/editText2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Color"
+        android:id="@+id/tvYear"
+        android:layout_below="@+id/editText3"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText4"
+        android:layout_below="@+id/tvYear"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/editText3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Upload Image of this car (Optional)"
+        android:id="@+id/tbUploadImage"
+        android:layout_below="@+id/editText4"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
 
 
