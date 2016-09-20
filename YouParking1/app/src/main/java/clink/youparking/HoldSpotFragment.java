@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,11 +37,20 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
     double mLat, mLong;
     EditText comments;
     Spinner tickets;
+    Button holdBtn;
 
     private OnFragmentInteractionListener mListener;
 
     public HoldSpotFragment() {
         // Required empty public constructor
+    }
+
+
+
+    OnHoldPressed onHoldPressed;
+    public interface OnHoldPressed {
+        // Add another int paramter
+        public void onButtonPressed(int position);
     }
 
     /**
@@ -85,14 +96,13 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
         super.onViewCreated(view, savedInstanceState);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public void onHold() {
+
     }
 
 //    public void onHold(View view) {
@@ -108,6 +118,12 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        try {
+            onHoldPressed = (OnHoldPressed) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() +
+            " must implement OnHoldPressed");
+        }
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

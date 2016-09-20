@@ -9,11 +9,14 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
@@ -21,7 +24,7 @@ public class MainActivity extends AppCompatActivity
         MyBidsFragment.OnFragmentInteractionListener, FindNowFragment.OnFragmentInteractionListener,
         HoldSpotFragment.OnFragmentInteractionListener, FindLaterFragment.OnFragmentInteractionListener, HoldLaterFragment.OnFragmentInteractionListener,
         SignOutFragment.OnFragmentInteractionListener, GMapFragment.OnFragmentInteractionListener, HoldSpotMapFragment.OnFragmentInteractionListener,
-        MapInteraction{
+        MapInteraction, AsyncResponse, HoldSpotFragment.OnHoldPressed{
 
     TextView numTickets;
 
@@ -148,8 +151,35 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void recheckSpot(View view) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new HoldSpotMapFragment()).commit();
+    }
+
+    public void onHold(View view) {
+        Spinner spinner = (Spinner) findViewById(R.id.holdPointsSpinner);
+        String choice = spinner.getSelectedItem().toString();
+
+        EditText editText = (EditText) findViewById(R.id.holdSpotComments);
+        String holdComments = editText.getText().toString();
+        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+        backgroundWorker.delegate = this;
+
+        backgroundWorker.execute("hold", choice, "1", Double.toString(User.myLocation.latitude),
+                Double.toString(User.myLocation.longitude), holdComments);
+    }
+
+
+    @Override
+    public void processFinish(String output) {
 
     }
 
-    
+    @Override
+    public void onButtonPressed(int position) {
+//        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+//        backgroundWorker.delegate = this;
+//
+//        backgroundWorker.execute("hold", "1", Integer.toString(position), Double.toString(User.myLocation.latitude),
+//                Double.toString(User.myLocation.longitude), "Faculty");
+    }
 }
