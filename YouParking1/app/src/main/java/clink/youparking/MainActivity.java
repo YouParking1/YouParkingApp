@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity
         MyBidsFragment.OnFragmentInteractionListener, FindNowFragment.OnFragmentInteractionListener,
         HoldSpotFragment.OnFragmentInteractionListener, FindLaterFragment.OnFragmentInteractionListener, HoldLaterFragment.OnFragmentInteractionListener,
         SignOutFragment.OnFragmentInteractionListener, GMapFragment.OnFragmentInteractionListener, HoldSpotMapFragment.OnFragmentInteractionListener,
-        MapInteraction, AsyncResponse, HoldSpotFragment.OnHoldPressed{
+        MapInteraction, AsyncResponse{
 
     TextView numTickets;
 
@@ -143,6 +143,14 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * finishHold & recheckSpot are functions for HoldSpotMapFragment
+     * finishHold will take your coordinates and send them HoldSpotFragment.
+     *
+     * recheckSpot will reload the HoldSpotMapFragment in order obtain your current
+     * coordinates after error.
+     * @param view
+     */
     @Override
     public void finishHold(View view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -155,12 +163,17 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.flContent, new HoldSpotMapFragment()).commit();
     }
 
+    /**
+     * Takes content in HoldSpotFragment and sends it to database.
+     * @param view
+     */
     public void onHold(View view) {
         Spinner spinner = (Spinner) findViewById(R.id.holdPointsSpinner);
         String choice = spinner.getSelectedItem().toString();
 
         EditText editText = (EditText) findViewById(R.id.holdSpotComments);
         String holdComments = editText.getText().toString();
+
         BackgroundWorker backgroundWorker = new BackgroundWorker(this);
         backgroundWorker.delegate = this;
 
@@ -172,14 +185,5 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void processFinish(String output) {
 
-    }
-
-    @Override
-    public void onButtonPressed(int position) {
-//        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
-//        backgroundWorker.delegate = this;
-//
-//        backgroundWorker.execute("hold", "1", Integer.toString(position), Double.toString(User.myLocation.latitude),
-//                Double.toString(User.myLocation.longitude), "Faculty");
     }
 }

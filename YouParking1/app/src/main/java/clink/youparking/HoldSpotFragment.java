@@ -45,14 +45,6 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
         // Required empty public constructor
     }
 
-
-
-    OnHoldPressed onHoldPressed;
-    public interface OnHoldPressed {
-        // Add another int paramter
-        public void onButtonPressed(int position);
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -100,30 +92,9 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onHold() {
-
-    }
-
-//    public void onHold(View view) {
-//        comments = (EditText)getView().findViewById(R.id.comments);
-//        tickets = (Spinner)getView().findViewById(R.id.spinner1);
-//        String comment = comments.getText().toString();
-//        String ticket = tickets.getSelectedItem().toString();
-//        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
-//        backgroundWorker.delegate = this;
-//        backgroundWorker.execute("hold", ticket, "1", Double.toString(mLat), Double.toString(mLong), comment);
-//    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try {
-            onHoldPressed = (OnHoldPressed) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() +
-            " must implement OnHoldPressed");
-        }
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

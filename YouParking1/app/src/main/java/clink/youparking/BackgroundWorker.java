@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.MainThread;
 
+import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -167,7 +169,11 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         alertDialog.setMessage(result);
         alertDialog.show();
-        delegate.processFinish(result);
+        try {
+            delegate.processFinish(result);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 

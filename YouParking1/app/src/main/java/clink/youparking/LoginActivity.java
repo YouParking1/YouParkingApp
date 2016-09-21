@@ -10,6 +10,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     EditText emailEt, passwordEt;
 
@@ -50,15 +54,27 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     @Override
-    public void processFinish(String output) {
-        if (output.contains("success")) {
-            User.email = emailEt.getText().toString();
+    public void processFinish(String output) throws JSONException {
+
+        JSONObject jsonObject = new JSONObject(output);
+            String strLoginID = jsonObject.optString("Email");
+            String strSchool = jsonObject.optString("University");
+            String strFName = jsonObject.optString("FName");
+            String strLName = jsonObject.optString("LName");
+            User.points = jsonObject.optInt("Points");
+            User.email = strLoginID;
+            User.school = strSchool;
+            User.fName = strFName;
+            User.lName = strLName;
+
+            //System.out.println(User.email + " " + User.school + " " + User.fName + " " + User.lName + " " + User.points);
+
             SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("Username", User.email);
             editor.commit();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-        }
+
     }
 }
