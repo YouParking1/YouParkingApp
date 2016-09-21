@@ -30,6 +30,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     private String mParam2;
 
     TextView spotsAvailable;
+    TextView welcomeMessage;
 
     private OnFragmentInteractionListener mListener;
 
@@ -75,6 +76,9 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        welcomeMessage = (TextView) getView().findViewById(R.id.welcomeText);
+        welcomeMessage.setText("Welcome, " + User.fName + " " + User.lName);
 
         BackgroundWorker backgroundWorker = new BackgroundWorker(getActivity());
         backgroundWorker.delegate = this;

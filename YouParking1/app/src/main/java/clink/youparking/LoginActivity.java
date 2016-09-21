@@ -22,8 +22,13 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
         String Username = preferences.getString("Username", "");
+        String fName = preferences.getString("first_name", "");
+        String lName = preferences.getString("last_name", "");
         if(Username.length() != 0)
         {
+            User.email = Username;
+            User.fName = fName;
+            User.lName = lName;
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
@@ -57,24 +62,26 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     public void processFinish(String output) throws JSONException {
 
         JSONObject jsonObject = new JSONObject(output);
-            String strLoginID = jsonObject.optString("Email");
-            String strSchool = jsonObject.optString("University");
-            String strFName = jsonObject.optString("FName");
-            String strLName = jsonObject.optString("LName");
-            User.points = jsonObject.optInt("Points");
-            User.email = strLoginID;
-            User.school = strSchool;
-            User.fName = strFName;
-            User.lName = strLName;
+        String strLoginID = jsonObject.optString("Email");
+        String strSchool = jsonObject.optString("University");
+        String strFName = jsonObject.optString("FName");
+        String strLName = jsonObject.optString("LName");
+        User.points = jsonObject.optInt("Points");
+        User.email = strLoginID;
+        User.school = strSchool;
+        User.fName = strFName;
+        User.lName = strLName;
 
-            //System.out.println(User.email + " " + User.school + " " + User.fName + " " + User.lName + " " + User.points);
+        //System.out.println(User.email + " " + User.school + " " + User.fName + " " + User.lName + " " + User.points);
 
-            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("Username", User.email);
-            editor.commit();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("Username", User.email);
+        editor.putString("first_name", User.fName);
+        editor.putString("last_name", User.lName);
+        editor.commit();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
 
     }
 }

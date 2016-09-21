@@ -77,7 +77,13 @@ public class HoldSpotMapFragment extends Fragment implements GMapFragment.OnFrag
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        Bundle bundle = new Bundle();
+        String mapType = "HOLD";
+        bundle.putString("TYPE", mapType);
+
         mapFrag = new GMapFragment();
+        mapFrag.setArguments(bundle);
+
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.hold_map, mapFrag).commit();
     }

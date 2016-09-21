@@ -52,6 +52,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
     private Marker myMarker;
 
+    private String mapType;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -93,17 +95,24 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
+        mapType = getArguments().getString("TYPE");
+
+        if (mapType.equals("HOLD")) {
+            if (mGoogleApiClient == null) {
+                mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .addApi(LocationServices.API)
+                        .build();
+            }
+            mLocationRequest = LocationRequest.create()
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                    .setInterval(10 * 1000)
+                    .setFastestInterval(1 * 1000);
         }
-        mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10*1000)
-                .setFastestInterval(1*1000);
+        else {
+            // TODO: ADD CODE FOR FINDING SCHOOLS LOCATION AND SETTING CENTRAL VIEW TO THOSE COORDINATES
+        }
 
     }
 
@@ -217,7 +226,9 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onStart() {
-        mGoogleApiClient.connect();
+
+        if (mapType.equals("HOLD"))
+            mGoogleApiClient.connect();
         super.onStart();
     }
 }

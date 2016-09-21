@@ -63,7 +63,13 @@ public class FindNowFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        Bundle bundle = new Bundle();
+        String type = "FIND";
+        bundle.putString("TYPE", type);
+
         mapFrag = new GMapFragment();
+        mapFrag.setArguments(bundle);
+
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.find_now_map, mapFrag).commit();
     }
