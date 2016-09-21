@@ -16,63 +16,52 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             tools:context="troy.com.youparking.MainActivity"
-            android:layout_gravity="left|bottom">
-
-            <ImageView
-                android:id="@+id/profilePic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:maxWidth="42dp"
-                android:maxHeight="42dp"
-                android:scaleType="fitXY"
-                android:layout_centerHorizontal="true" />
-
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Go to Map"
-                android:id="@+id/mapButton"
-                android:onClick="openMyMap"
-                android:layout_alignParentBottom="true"
-                android:layout_alignLeft="@+id/textView2"
-                android:layout_alignStart="@+id/textView2"
-                android:layout_marginBottom="123dp"
-                android:layout_alignRight="@+id/textView2"
-                android:layout_alignEnd="@+id/textView2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Welcome to YouParking"
-                android:id="@+id/textView2"
-                android:textSize="30dp"
-                android:layout_below="@+id/profilePic"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="35dp" />
+            android:layout_gravity="start">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Spots"
-                android:id="@+id/textView3"
-                android:layout_marginTop="30dp"
-                android:textSize="25dp"
-                android:layout_below="@+id/textView2"
-                android:layout_centerHorizontal="true" />
+                android:text="@string/home_spots_text"
+                android:id="@+id/spotsText"
+                android:textSize="30sp"
+                android:textColor="#000"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="65dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="0"
+                android:text="@string/home_spots_number"
                 android:id="@+id/spotsAvailable"
-                android:layout_below="@+id/textView3"
+                android:layout_below="@+id/spotsText"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:textColor="#000"
+                android:textSize="35sp" />
+
+            <TextView
+                android:id="@+id/achievementText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/home_achievements_text"
+                android:layout_marginBottom="133dp"
+                android:textColor="#000"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Welcome, "
+                android:id="@+id/welcomeText"
+                android:layout_centerHorizontal="true"
+                android:textSize="30sp"
+                android:textColor="#000" />
 
         </RelativeLayout>
     </FrameLayout>
