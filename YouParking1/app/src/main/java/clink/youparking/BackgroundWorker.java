@@ -194,6 +194,54 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
                 e.printStackTrace();
             }
         }
+        else if (type.equals("hold_later")) {
+            showAlert = true;
+            try {
+                String hold_url = "http://www.troyparking.com/holdlater.php";
+                String email = User.email;
+                String points = params[1];
+                String userDepartureTime = params[2];
+                String car = params[3];
+                String latitude = params[4];
+                String longitude = params[5];
+                String comments = params[6];
+                String school = User.school;
+                URL url = new URL(hold_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("email", "UTF-8")+"="+URLEncoder.encode(email, "UTF-8")+"&"
+                        +URLEncoder.encode("points", "UTF-8")+"="+URLEncoder.encode(points, "UTF-8")+"&"
+                        +URLEncoder.encode("userDepartureTime", "UTF-8")+"="+URLEncoder.encode(userDepartureTime, "UTF-8")+"&"
+                        +URLEncoder.encode("car", "UTF-8")+"="+URLEncoder.encode(car, "UTF-8")+"&"
+                        +URLEncoder.encode("comments", "UTF-8")+"="+URLEncoder.encode(comments, "UTF-8")+"&"
+                        +URLEncoder.encode("latitude", "UTF-8")+"="+URLEncoder.encode(latitude, "UTF-8")+"&"
+                        +URLEncoder.encode("longitude", "UTF-8")+"="+URLEncoder.encode(longitude, "UTF-8")+"&"
+                        +URLEncoder.encode("school", "UTF-8")+"="+URLEncoder.encode(school, "UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return null;
     }
 

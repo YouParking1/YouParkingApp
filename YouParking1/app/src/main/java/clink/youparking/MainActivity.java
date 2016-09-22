@@ -1,5 +1,7 @@
 package clink.youparking;
 
+import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,17 +16,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, VehiclesFragment.OnFragmentInteractionListener,
         MyBidsFragment.OnFragmentInteractionListener, FindNowFragment.OnFragmentInteractionListener,
         HoldSpotFragment.OnFragmentInteractionListener, FindLaterFragment.OnFragmentInteractionListener, HoldLaterFragment.OnFragmentInteractionListener,
         SignOutFragment.OnFragmentInteractionListener, GMapFragment.OnFragmentInteractionListener, HoldSpotMapFragment.OnFragmentInteractionListener,
-        MapInteraction, AsyncResponse{
+        MapInteraction, HoldLaterMapFragment.OnFragmentInteractionListener, AsyncResponse{
 
     TextView numTickets;
 
@@ -117,11 +122,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_find_now) {
             fragmentClass = FindNowFragment.class;
         } else if (id == R.id.nav_hold_spot) {
-            fragmentClass =HoldSpotMapFragment.class;
+            fragmentClass = HoldSpotMapFragment.class;
         } else if (id == R.id.nav_find_later) {
             fragmentClass = FindLaterFragment.class;
         } else if (id == R.id.nav_hold_later) {
-            fragmentClass = HoldLaterFragment.class;
+            fragmentClass = HoldLaterMapFragment.class;
         } else if (id == R.id.nav_sign_out) {
             fragmentClass = SignOutFragment.class;
         }
@@ -163,6 +168,17 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.flContent, new HoldSpotMapFragment()).commit();
     }
 
+    public void finishHoldLater(View view) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new HoldLaterFragment()).commit();
+    }
+
+    public void recheckSpotLater(View view)
+    {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new HoldLaterMapFragment()).commit();
+    }
+
     /**
      * Takes content in HoldSpotFragment and sends it to database.
      * @param view
@@ -181,6 +197,30 @@ public class MainActivity extends AppCompatActivity
                 Double.toString(User.myLocation.longitude), holdComments);
     }
 
+    public void onHoldLater(View view)
+    {
+        TextView timePicked = (TextView)findViewById(R.id.timeText);
+        String userDepartureTime = timePicked.getText().toString();
+//        String finalDepartTime = userDepartureTime.replaceAll("[:AMPM ]","");
+
+        EditText editText = (EditText) findViewById(R.id.holdSpotLaterComments);
+        String holdLaterComments = editText.getText().toString();
+
+        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+        backgroundWorker.delegate = this;
+
+//        System.out.println("Depart Time: " + finalDepartTime + "\nLatitude: " + User.myLocation.latitude +
+//            "\nLongitude: " + User.myLocation.longitude + "\nComments: " + holdLaterComments);
+
+        //TODO: Travis Clinkscales - Change the second argument to something else
+        backgroundWorker.execute("hold_later", "bid", userDepartureTime, "1", Double.toString(User.myLocation.latitude),
+                Double.toString(User.myLocation.longitude), holdLaterComments);
+    }
+
+    public void onSetTimeButtonClicked(View view){
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getFragmentManager(), "TimePicker");
+    }
 
     @Override
     public void processFinish(String output) {

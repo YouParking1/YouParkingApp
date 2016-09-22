@@ -24,10 +24,11 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/home_spots_text"
                 android:id="@+id/spotsText"
-                android:textSize="30sp"
+                android:textSize="25sp"
                 android:textColor="#000"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="65dp" />
+                android:layout_marginTop="51dp"
+                android:layout_below="@+id/welcomeText"
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -39,7 +40,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:textColor="#000"
-                android:textSize="35sp" />
+                android:textSize="35sp"
+                android:background="@drawable/spotsborder"
+                android:padding="16sp" />
 
             <TextView
                 android:id="@+id/achievementText"
@@ -51,17 +54,18 @@
                 android:textColor="#000"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:textSize="30sp" />
+                android:textSize="25sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Welcome, "
                 android:id="@+id/welcomeText"
+                android:textSize="25sp"
+                android:textColor="#000"
+                android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:textSize="30sp"
-                android:textColor="#000" />
+                android:layout_marginTop="40dp" />
 
         </RelativeLayout>
     </FrameLayout>
