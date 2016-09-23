@@ -24,6 +24,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, VehiclesFragment.OnFragmentInteractionListener,
         MyBidsFragment.OnFragmentInteractionListener, FindNowFragment.OnFragmentInteractionListener,
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity
         MapInteraction, HoldLaterMapFragment.OnFragmentInteractionListener, AsyncResponse{
 
     TextView numTickets;
+
+    String outputFromProcess = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,8 +140,10 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -223,7 +230,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void processFinish(String output) {
-
+    public void processFinish(String output) throws JSONException {
+        outputFromProcess = output;
     }
+
 }

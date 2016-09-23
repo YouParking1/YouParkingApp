@@ -21,7 +21,31 @@
             android:layout_height="match_parent"
             android:id="@+id/find_spot_populate"
             android:orientation="vertical"
-            android:background="@color/black"></LinearLayout>
+            android:background="@color/colorPrimary">
+            <!--<ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scroll_find_now"></ScrollView>-->
+            <!--<com.daimajia.swipe.SwipeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+
+                <LinearLayout
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent"
+                    android:weightSum="1"
+                    android:id="@+id/bottom_wrapper"
+                    android:orientation="vertical"
+                    android:onClick="goHomeFromFind"></LinearLayout>
+                <LinearLayout
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"></LinearLayout>
+            </com.daimajia.swipe.SwipeLayout>-->
+        </LinearLayout>
+
 
     </LinearLayout>
 

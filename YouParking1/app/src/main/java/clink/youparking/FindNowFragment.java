@@ -3,11 +3,20 @@ package clink.youparking;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 /**
@@ -18,7 +27,7 @@ import android.view.ViewGroup;
  * Use the {@link FindNowFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FindNowFragment extends Fragment {
+public class FindNowFragment extends Fragment implements AsyncResponse {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,6 +38,12 @@ public class FindNowFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    //private ScrollView scrollView = (ScrollView) getActivity().findViewById(R.id.scroll_find_now);
+
+    public ArrayList<com.daimajia.swipe.SwipeLayout> swipeLayouts = new ArrayList<>();
+    public ArrayList<LinearLayout> linearLayouts = new ArrayList<>();
+    public ArrayList<LinearLayout> innerLayouts = new ArrayList<>();
 
     // Fragment for google maps.
     private Fragment mapFrag;
@@ -63,15 +78,15 @@ public class FindNowFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        Bundle bundle = new Bundle();
-        String type = "FIND";
-        bundle.putString("TYPE", type);
+//        Bundle bundle = new Bundle();
+//        String type = "FIND";
+//        bundle.putString("TYPE", type);
 
-        mapFrag = new GMapFragment();
-        mapFrag.setArguments(bundle);
-
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.find_now_map, mapFrag).commit();
+//        mapFrag = new GMapFragment();
+//        //mapFrag.setArguments(bundle);
+//
+//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//        transaction.add(R.id.find_now_map, mapFrag).commit();
     }
 
     @Override
@@ -79,6 +94,14 @@ public class FindNowFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_find_now, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        BackgroundWorker backgroundWorker = new BackgroundWorker(getContext());
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute("findnow");
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -103,6 +126,41 @@ public class FindNowFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void processFinish(String output) throws JSONException {
+        Bundle bundle = new Bundle();
+        bundle.putString("TYPE", "FIND");
+
+        if (output.contains("nospotsfound")) {
+
+        }
+        else {
+            //JSONObject jsonObject = new JSONObject(output);
+            JSONArray jsonArray = new JSONArray(output);
+            double lats [] = new double[jsonArray.length()];
+            double longs [] = new double[jsonArray.length()];
+            int points [] = new int[jsonArray.length()];
+
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                lats[i] = jsonObject.getDouble("Latitude");
+                longs[i] = jsonObject.getDouble("Longitude");
+                points[i] = jsonObject.getInt("Points");
+            }
+
+            bundle.putDoubleArray("LATS", lats);
+            bundle.putDoubleArray("LONGS", longs);
+            bundle.putIntArray("POINTS", points);
+        }
+
+        mapFrag = new GMapFragment();
+        mapFrag.setArguments(bundle);
+
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.add(R.id.find_now_map, mapFrag).commit();
     }
 
     /**

@@ -29,6 +29,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -194,11 +196,27 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+
+
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         LatLng troy = new LatLng(31.7988, -85.9574);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(troy));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+
+        if (mapType.equals("FIND")) {
+            int size = getArguments().getDoubleArray("LATS").length;
+            double lats [] = getArguments().getDoubleArray("LATS");
+            double longs [] = getArguments().getDoubleArray("LONGS");
+            int points [] = getArguments().getIntArray("POINTS");
+
+            ArrayList<Marker> markers = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                LatLng latLng = new LatLng(lats[i], longs[i]);
+                mMap.addMarker(new MarkerOptions().position(latLng).title(Integer.toString(points[i])));
+            }
+        }
     }
 
     /**

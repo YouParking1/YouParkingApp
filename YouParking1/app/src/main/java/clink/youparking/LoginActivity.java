@@ -24,11 +24,13 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         String Username = preferences.getString("Username", "");
         String fName = preferences.getString("first_name", "");
         String lName = preferences.getString("last_name", "");
+        String school = preferences.getString("University", "");
         if(Username.length() != 0)
         {
             User.email = Username;
             User.fName = fName;
             User.lName = lName;
+            User.school = school;
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
@@ -79,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         editor.putString("Username", User.email);
         editor.putString("first_name", User.fName);
         editor.putString("last_name", User.lName);
+        editor.putString("University", User.school);
         editor.commit();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
