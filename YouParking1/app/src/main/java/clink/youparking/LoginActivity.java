@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
             User.lName = lName;
             User.school = school;
             Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            startActivity(intent); //DELETE THIS COMMENT
         }
 
         super.onCreate(savedInstanceState);
