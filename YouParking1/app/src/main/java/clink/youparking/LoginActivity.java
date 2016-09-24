@@ -39,7 +39,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         setContentView(R.layout.activity_login);
         emailEt = (EditText) findViewById(R.id.email);
         passwordEt = (EditText) findViewById(R.id.pass);
-        TextView tvSignUp =(TextView) findViewById(R.id.tvSignUp);
     }
 
     public void goToRegistration(View view)

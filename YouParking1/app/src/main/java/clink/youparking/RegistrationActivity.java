@@ -65,7 +65,7 @@ public class RegistrationActivity extends AppCompatActivity implements AsyncResp
             String type = "register";
             BackgroundWorker backgroundWorker = new BackgroundWorker(this);
             backgroundWorker.delegate = this;
-            backgroundWorker.execute(type, firstName,lastName, university,
+            backgroundWorker.execute(type, firstName, lastName, university,
                         email,password);
         }
 
@@ -74,7 +74,7 @@ public class RegistrationActivity extends AppCompatActivity implements AsyncResp
     @Override
     public void processFinish(String output) {
         if (output.contains("success")) {
-            Intent intent = new Intent(this, VehicleRegistrationActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
     }

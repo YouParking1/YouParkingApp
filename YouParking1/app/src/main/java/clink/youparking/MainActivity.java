@@ -2,6 +2,7 @@ package clink.youparking;
 
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity
         MapInteraction, HoldLaterMapFragment.OnFragmentInteractionListener, AsyncResponse{
 
     TextView numTickets;
-
+    Spinner smake, smodel, syear, scolor;
     String outputFromProcess = null;
 
     @Override
@@ -186,6 +188,41 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.flContent, new HoldLaterMapFragment()).commit();
     }
 
+    public void saveVehicle(View view)
+    {
+        smake = (Spinner)findViewById(R.id.sMake);
+        smodel = (Spinner)findViewById(R.id.sModel);
+        syear = (Spinner) findViewById(R.id.sYear);
+        scolor = (Spinner)findViewById(R.id.sColor);
+
+        //TODO : Travis Clinkscales - make if/else if statement for each case and have alert for each
+        if(smake != null && smake.getSelectedItem() != null && smodel != null && smodel.getSelectedItem() != null
+                && syear != null && syear.getSelectedItem() != null && scolor != null && scolor.getSelectedItem() != null)
+        {
+            String selectedMake = smake.getSelectedItem().toString();
+            String selectedModel = smodel.getSelectedItem().toString();
+            String selectedYear = syear.getSelectedItem().toString();
+            String selectedColor = scolor.getSelectedItem().toString();
+
+            System.out.println("\n\nMake: " + selectedMake + "\nModel: " + selectedModel + "\nYear: " + selectedYear + "\nColor: " + selectedColor + "\n\n");
+
+            String type = "vehicleRegister";
+            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+            backgroundWorker.delegate = this;
+            backgroundWorker.execute(type, selectedMake, selectedModel, selectedYear,
+                    selectedColor);
+        }
+        else
+        {
+            Context context = getApplicationContext();
+            CharSequence text = "Must select a choice for all fields!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+    }
+
     /**
      * Takes content in HoldSpotFragment and sends it to database.
      * @param view
@@ -207,8 +244,8 @@ public class MainActivity extends AppCompatActivity
     public void onHoldLater(View view)
     {
         TextView timePicked = (TextView)findViewById(R.id.timeText);
-        String userDepartureTime = timePicked.getText().toString();
-//        String finalDepartTime = userDepartureTime.replaceAll("[:AMPM ]","");
+        String departTime = timePicked.getText().toString();
+        String finalDepartTime = departTime.replaceAll("[:AMP ]","");
 
         EditText editText = (EditText) findViewById(R.id.holdSpotLaterComments);
         String holdLaterComments = editText.getText().toString();
@@ -220,7 +257,7 @@ public class MainActivity extends AppCompatActivity
 //            "\nLongitude: " + User.myLocation.longitude + "\nComments: " + holdLaterComments);
 
         //TODO: Travis Clinkscales - Change the second argument to something else
-        backgroundWorker.execute("hold_later", "bid", userDepartureTime, "1", Double.toString(User.myLocation.latitude),
+        backgroundWorker.execute("hold_later", "bid", finalDepartTime, "1", Double.toString(User.myLocation.latitude),
                 Double.toString(User.myLocation.longitude), holdLaterComments);
     }
 

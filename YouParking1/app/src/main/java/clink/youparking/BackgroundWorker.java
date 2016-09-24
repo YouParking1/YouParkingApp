@@ -3,7 +3,6 @@ package clink.youparking;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.MainThread;
 
 import org.json.JSONException;
 
@@ -93,6 +92,49 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
                         +"&"+URLEncoder.encode("FName", "UTF-8")+"="+URLEncoder.encode(FName, "UTF-8")
                         +"&"+URLEncoder.encode("LName", "UTF-8")+"="+URLEncoder.encode(LName, "UTF-8")
                         +"&"+URLEncoder.encode("University", "UTF-8")+"="+URLEncoder.encode(University, "UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line;
+                while((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        else if (type.equals("vehicleRegister"))  {
+            showAlert = true;
+            try {
+                String login_url = "http://www.troyparking.com/vehicleregister.php";
+                String email = User.email;
+                String Make = params[1];
+                String Model = params[2];
+                String Year = params[3];
+                String Color = params[4];
+                URL url = new URL(login_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("email", "UTF-8")+"="+URLEncoder.encode(email, "UTF-8")+"&"
+                        +URLEncoder.encode("Make", "UTF-8")+"="+URLEncoder.encode(Make, "UTF-8")+"&"
+                        +URLEncoder.encode("Model", "UTF-8")+"="+URLEncoder.encode(Model, "UTF-8")
+                        +"&"+URLEncoder.encode("Year", "UTF-8")+"="+URLEncoder.encode(Year, "UTF-8")
+                        +"&"+URLEncoder.encode("Color", "UTF-8")+"="+URLEncoder.encode(Color, "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
