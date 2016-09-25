@@ -9,13 +9,15 @@ import java.util.ArrayList;
  */
 public class User {
 
-
-    public static String email = "a@troy.edu";
-    public static String school = "Troy University";
+    public static String email = null;
+    public static String school = null;
     public static String fName = null;
     public static String lName = null;
     public static LatLng myLocation = null;
     public static int points = 0;
     public static boolean failedLogin = false;
     public static ArrayList<LatLng> heldLocation = new ArrayList<>();
+
+    public static long time = 0;
+
 }

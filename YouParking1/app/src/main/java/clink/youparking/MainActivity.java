@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity
 //            "\nLongitude: " + User.myLocation.longitude + "\nComments: " + holdLaterComments);
 
         //TODO: Travis Clinkscales - Change the second argument to something else
-        backgroundWorker.execute("hold_later", "bid", finalDepartTime, "1", Double.toString(User.myLocation.latitude),
+        backgroundWorker.execute("hold_later", "bid", Long.toString(User.time), "1", Double.toString(User.myLocation.latitude),
                 Double.toString(User.myLocation.longitude), holdLaterComments);
     }
 

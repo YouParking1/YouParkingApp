@@ -1,26 +1,28 @@
 package clink.youparking;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SignOutFragment.OnFragmentInteractionListener} interface
+ * {@link DynamicSpot.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SignOutFragment#newInstance} factory method to
+ * Use the {@link DynamicSpot#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SignOutFragment extends Fragment {
+public class DynamicSpot extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -32,7 +34,7 @@ public class SignOutFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public SignOutFragment() {
+    public DynamicSpot() {
         // Required empty public constructor
     }
 
@@ -42,11 +44,11 @@ public class SignOutFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SignOutFragment.
+     * @return A new instance of fragment DynamicSpot.
      */
     // TODO: Rename and change types and number of parameters
-    public static SignOutFragment newInstance(String param1, String param2) {
-        SignOutFragment fragment = new SignOutFragment();
+    public static DynamicSpot newInstance(String param1, String param2) {
+        DynamicSpot fragment = new DynamicSpot();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -56,32 +58,33 @@ public class SignOutFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-        SharedPreferences preferences = this.getActivity().getSharedPreferences("LoginActivity", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear().commit();
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-        startActivity(intent);
-
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_dyanmic_spot, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/fontawesome-webfont.ttf");
+        TextView text = (TextView) getView().findViewById(R.id.spot_on_bar);
+        text.setTypeface(font);
+        TextView ticketIcon = (TextView) getView().findViewById(R.id.ticket_icon_find);
+        ticketIcon.setTypeface(font);
+        TextView cartIcon = (TextView) getView().findViewById(R.id.cart_icon_layout);
+        cartIcon.setTypeface(font);
     }
-
-    //    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_sign_out, container, false);
-//    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -93,12 +96,12 @@ public class SignOutFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
     }
 
     @Override
