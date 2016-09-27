@@ -28,7 +28,7 @@
     <string name="reg_hint">(.edu)</string>
     <string name="reg_password">Password</string>
     <string name="reg_confirm_password">Confirm Password</string>
-    <string name="reg_btn">Register Vehicle</string>
+    <string name="reg_btn">Continue</string>
 
     <!-- Restrictions for text inputs -->
     <string name="allow_only_alpha">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-</string>

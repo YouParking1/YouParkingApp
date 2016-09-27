@@ -188,41 +188,6 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.flContent, new HoldLaterMapFragment()).commit();
     }
 
-    public void saveVehicle(View view)
-    {
-        smake = (Spinner)findViewById(R.id.sMake);
-        smodel = (Spinner)findViewById(R.id.sModel);
-        syear = (Spinner) findViewById(R.id.sYear);
-        scolor = (Spinner)findViewById(R.id.sColor);
-
-        //TODO : Travis Clinkscales - make if/else if statement for each case and have alert for each
-        if(smake != null && smake.getSelectedItem() != null && smodel != null && smodel.getSelectedItem() != null
-                && syear != null && syear.getSelectedItem() != null && scolor != null && scolor.getSelectedItem() != null)
-        {
-            String selectedMake = smake.getSelectedItem().toString();
-            String selectedModel = smodel.getSelectedItem().toString();
-            String selectedYear = syear.getSelectedItem().toString();
-            String selectedColor = scolor.getSelectedItem().toString();
-
-            System.out.println("\n\nMake: " + selectedMake + "\nModel: " + selectedModel + "\nYear: " + selectedYear + "\nColor: " + selectedColor + "\n\n");
-
-            String type = "vehicleRegister";
-            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
-            backgroundWorker.delegate = this;
-            backgroundWorker.execute(type, selectedMake, selectedModel, selectedYear,
-                    selectedColor);
-        }
-        else
-        {
-            Context context = getApplicationContext();
-            CharSequence text = "Must select a choice for all fields!";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }
-    }
-
     /**
      * Takes content in HoldSpotFragment and sends it to database.
      * @param view

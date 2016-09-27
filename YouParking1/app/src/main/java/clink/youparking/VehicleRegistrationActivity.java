@@ -191,13 +191,16 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
             String selectedYear = syear.getSelectedItem().toString();
             String selectedColor = scolor.getSelectedItem().toString();
 
-            System.out.println("\n\nMake: " + selectedMake + "\nModel: " + selectedModel + "\nYear: " + selectedYear + "\nColor: " + selectedColor + "\n\n");
+            //System.out.println("\n\nMake: " + selectedMake + "\nModel: " + selectedModel + "\nYear: " + selectedYear + "\nColor: " + selectedColor + "\n\n");
 
             String type = "vehicleRegister";
             BackgroundWorker backgroundWorker = new BackgroundWorker(this);
             backgroundWorker.delegate = this;
             backgroundWorker.execute(type, selectedMake, selectedModel, selectedYear,
                     selectedColor);
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
         else
         {
@@ -212,10 +215,10 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
 
     @Override
     public void processFinish(String output) {
-        if (output.contains("success")) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
+//        if (output.contains("success")) {
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//        }
     }
 }
 

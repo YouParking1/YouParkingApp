@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegistrationActivity extends AppCompatActivity implements AsyncResponse {
@@ -34,9 +35,8 @@ public class RegistrationActivity extends AppCompatActivity implements AsyncResp
 
     }
 
-    public void goToVehicleRegistration(View view)
+    public void goToEmailVerification(View view)
     {
-
         String firstName = FName.getText().toString();
         String lastName = LName.getText().toString();
         String email = Email.getText().toString();
@@ -66,15 +66,24 @@ public class RegistrationActivity extends AppCompatActivity implements AsyncResp
             BackgroundWorker backgroundWorker = new BackgroundWorker(this);
             backgroundWorker.delegate = this;
             backgroundWorker.execute(type, firstName, lastName, university,
-                        email,password);
+                    email,password);
         }
-
     }
 
     @Override
     public void processFinish(String output) {
         if (output.contains("success")) {
-            Intent intent = new Intent(this, MainActivity.class);
+            TextView email = (TextView)findViewById(R.id.reg_email);
+            TextView fname = (TextView)findViewById(R.id.reg_first_name);
+            TextView lname = (TextView)findViewById(R.id.reg_last_name);
+            AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.reg_university);
+
+            User.email = email.getText().toString();
+            User.fName = fname.getText().toString();
+            User.lName = lname.getText().toString();
+            User.school = autoCompleteTextView.getText().toString();
+
+            Intent intent = new Intent(this, VerifyEmail.class);
             startActivity(intent);
         }
     }

@@ -114,7 +114,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="Start Parking!"
         android:id="@+id/regVehicleBtn"
         android:layout_below="@+id/sColor"
         android:layout_alignParentEnd="true"

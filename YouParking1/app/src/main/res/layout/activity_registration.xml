@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip"
                 android:text="@string/reg_btn"
-                android:onClick="goToVehicleRegistration" />
+                android:onClick="goToEmailVerification" />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>
