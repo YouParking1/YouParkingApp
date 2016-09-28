@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
-public class VerifyEmail extends AppCompatActivity {
+import org.json.JSONException;
+
+public class VerifyEmail extends AppCompatActivity implements AsyncResponse {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,10 +20,21 @@ public class VerifyEmail extends AppCompatActivity {
 
     public void registerVehicle(View view)
     {
-        String email_code = "";
-        String database_code = "";
+        EditText code = (EditText)findViewById(R.id.verifyCode);
+        String user_code = code.getText().toString();
+        String type = "verifyEmail";
 
-        if(email_code == database_code) {
+        System.out.println("User code is : " + user_code);
+
+        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute(type, user_code);
+    }
+
+    @Override
+    public void processFinish(String output) throws JSONException {
+
+        if(output.contains("Continue")) {
             Intent intent = new Intent(this, VehicleRegistrationActivity.class);
             startActivity(intent);
         }

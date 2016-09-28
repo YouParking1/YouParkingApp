@@ -30,19 +30,7 @@ import java.util.ArrayList;
  * Use the {@link VehiclesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VehiclesFragment extends Fragment implements AsyncResponse {
-
-    Spinner smake, smodel, syear, scolor;
-    String MakeTxt, ModelTxt;
-    public String AssetJSONFile(String filename, Context context) throws IOException {
-        //AssetManager manager = context.getAssets();
-        InputStream file = getActivity().getAssets().open(filename);
-        byte[] formArray = new byte[file.available()];
-        file.read(formArray);
-        file.close();
-        String json = new String(formArray, "UTF-8");
-        return json;
-    }
+public class VehiclesFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,146 +77,6 @@ public class VehiclesFragment extends Fragment implements AsyncResponse {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        smake = (Spinner)getView().findViewById(R.id.sMake);
-        smodel = (Spinner)getView().findViewById(R.id.sModel);
-        syear = (Spinner)getView().findViewById(R.id.sYear);
-
-        //ArrayList<HashMap<String, String>> formList = new ArrayList<HashMap<String, String>>();
-        try {
-            JSONObject jsonobject = new JSONObject(AssetJSONFile("json/vehicles.json", getActivity()));
-            //JSONObject jsonobject = new JSONObject(jsonLocation);
-            JSONArray jarray = (JSONArray) jsonobject.getJSONArray("makes");
-            ArrayList<String> strArr = new ArrayList<>();
-            strArr.add("Please Select a Make");
-            for(int i=0;i<jarray.length();i++)
-            {
-                JSONObject jb =(JSONObject) jarray.get(i);
-                String m = jb.getString("make");
-                strArr.add(m);
-            }
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_spinner_dropdown_item, strArr);
-            smake.setAdapter(adapter);
-
-            smake.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-            {
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-                {
-                    String selectedItem = parent.getItemAtPosition(position).toString();
-                    MakeTxt = selectedItem;
-                    picksMake(selectedItem);
-                } // to close the onItemSelected
-                public void onNothingSelected(AdapterView<?> parent)
-                {
-
-                }
-            });
-
-            smodel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-            {
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-                {
-                    String selectedItem = parent.getItemAtPosition(position).toString();
-                    ModelTxt = selectedItem;
-                    picksModel(selectedItem);
-                } // to close the onItemSelected
-                public void onNothingSelected(AdapterView<?> parent)
-                {
-
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public void picksMake(String str)
-    {
-        try {
-            JSONObject jsonobject = new JSONObject(AssetJSONFile("json/vehicles.json", getActivity()));
-            //JSONObject jsonobject = new JSONObject(jsonLocation);
-            JSONArray jarray = (JSONArray) jsonobject.getJSONArray("makes");
-            int index = 0;
-            for(int i=0;i<jarray.length();i++)
-            {
-                JSONObject jb =(JSONObject) jarray.get(i);
-                String m = jb.getString("make");
-                if(m.equals(str)) //change to option chosen in the make dropdown
-                {
-                    index = i;
-                }
-                //JSONArray jarray2 = (JSONArray) jb.getJSONArray("models");
-            }
-            JSONObject jb =(JSONObject) jarray.get(index);
-            JSONArray jarray2 = (JSONArray) jb.getJSONArray("models");
-            ArrayList<String> strArr = new ArrayList<>();
-            strArr.add("Please Select a Model");
-            for(int j=0;j<jarray2.length();j++)
-            {
-                JSONObject jb2 =(JSONObject) jarray2.get(j);
-                String model = jb2.getString("model");
-                strArr.add(model);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_spinner_dropdown_item, strArr);
-                smodel.setAdapter(adapter);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void picksModel(String str)
-    {
-        try {
-            JSONObject jsonobject = new JSONObject(AssetJSONFile("json/vehicles.json", getActivity()));
-            //JSONObject jsonobject = new JSONObject(jsonLocation);
-            JSONArray jarray = (JSONArray) jsonobject.getJSONArray("makes");
-            int index = 0;
-            for(int i=0;i<jarray.length();i++)
-            {
-                JSONObject jb =(JSONObject) jarray.get(i);
-                String m = jb.getString("make");
-                if(m.equals(MakeTxt)) //change to option chosen in the make dropdown
-                {
-                    index = i;
-                }
-            }
-            JSONObject jb =(JSONObject) jarray.get(index);
-            JSONArray jarray2 = (JSONArray) jb.getJSONArray("models");
-            for(int i=0;i<jarray2.length();i++)
-            {
-                JSONObject jb2 =(JSONObject) jarray2.get(i);
-                String m = jb2.getString("model");
-                if(m.equals(ModelTxt)) //change to option chosen in the make dropdown
-                {
-                    index = i;
-                }
-            }
-            JSONObject jb3 =(JSONObject) jarray2.get(index);
-            JSONArray jarray3 = (JSONArray) jb3.getJSONArray("years");
-            ArrayList<String> strArr = new ArrayList<>();
-            strArr.add("Please Select a Year");
-            for(int j=0;j<jarray3.length();j++)
-            {
-                jb3 =(JSONObject) jarray3.get(j);
-                String model = jb3.getInt("year") + "";
-                strArr.add(model);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_spinner_dropdown_item, strArr);
-                syear.setAdapter(adapter);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -262,13 +110,13 @@ public class VehiclesFragment extends Fragment implements AsyncResponse {
         mListener = null;
     }
 
-    @Override
-    public void processFinish(String output) throws JSONException {
-        if (output.contains("success")) {
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
-        }
-    }
+//    @Override
+//    public void processFinish(String output) throws JSONException {
+//        if (output.contains("success")) {
+//            Intent intent = new Intent(getActivity(), MainActivity.class);
+//            startActivity(intent);
+//        }
+//    }
 
     /**
      * This interface must be implemented by activities that contain this

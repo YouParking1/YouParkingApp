@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Please enter your verification code you recieved:"
+        android:text="Please enter your verification code you will recieve in the email you entered:"
         android:id="@+id/textView6"
         android:layout_marginTop="64dp"
         android:layout_below="@+id/textView5"
@@ -33,7 +33,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/verifyCode"
         android:layout_below="@+id/textView6"
         android:layout_marginTop="38dp"
         android:layout_alignEnd="@+id/textView5"
@@ -42,8 +42,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button"
-        android:layout_below="@+id/editText"
+        android:id="@+id/continueToVehicleBtn"
+        android:layout_below="@+id/verifyCode"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="111dp"
         android:text="Register Vehicle"

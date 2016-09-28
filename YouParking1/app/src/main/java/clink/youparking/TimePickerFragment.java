@@ -1,5 +1,6 @@
 package clink.youparking;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.app.TimePickerDialog;
 import android.text.format.DateFormat;
@@ -8,12 +9,13 @@ import android.app.DialogFragment;
 import android.app.Dialog;
 import java.util.Calendar;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     final Calendar c = Calendar.getInstance();
     private long phpTime = 0;
-
+    final int twoHoursLater = 7200000;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -44,7 +46,24 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         time += diff;
         phpTime = time/1000;
         User.time = phpTime;
-        //System.out.println(time + " *@*@*@*@ " + System.currentTimeMillis());
+
+        long time2 = calendar.getTimeInMillis();
+        long diff2 = (System.currentTimeMillis() - time2) + twoHoursLater;
+        time2 += diff2;
+        long phpTime2 = time2/1000;
+
+        System.out.println("User Time: " + User.time);
+        System.out.println("Two Hours Later Time: " + phpTime2);
+
+        if (User.time < phpTime2)
+        {
+            Context context = getActivity().getApplicationContext();
+            CharSequence text = "Must be at least two hours later.";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
     }
 
     public long getPhpTime() {
