@@ -133,26 +133,44 @@ public class FindNowFragment extends Fragment implements AsyncResponse {
         Bundle bundle = new Bundle();
         bundle.putString("TYPE", "FIND");
 
+        //ArrayList<Spot> User.spots = new ArrayList<>();
+        ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
+
         if (output.contains("nospotsfound")) {
 
         }
         else {
-            //JSONObject jsonObject = new JSONObject(output);
+
             JSONArray jsonArray = new JSONArray(output);
+
             double lats [] = new double[jsonArray.length()];
             double longs [] = new double[jsonArray.length()];
+
+            String comments [] = new String[jsonArray.length()];
+
             int points [] = new int[jsonArray.length()];
 
 
+            if (!User.spots.isEmpty()) {
+                User.spots.clear();
+            }
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                User.spots.add(new Spot(jsonObject.getDouble("Latitude"), jsonObject.getDouble("Longitude"),
+                        jsonObject.getInt("Points"), jsonObject.getInt("CurrentCar"), jsonObject.getString("Email"),
+                        jsonObject.getString("Comments"), jsonObject.getInt("Holder_Percent"),
+                        jsonObject.getInt("Holder_Spots")));
+
                 lats[i] = jsonObject.getDouble("Latitude");
                 longs[i] = jsonObject.getDouble("Longitude");
+                comments[i] = jsonObject.getString("Comments");
                 points[i] = jsonObject.getInt("Points");
             }
 
             bundle.putDoubleArray("LATS", lats);
             bundle.putDoubleArray("LONGS", longs);
+            bundle.putStringArray("COMMENTS", comments);
             bundle.putIntArray("POINTS", points);
         }
 
@@ -166,8 +184,32 @@ public class FindNowFragment extends Fragment implements AsyncResponse {
 
         LinearLayout linearLayout = (LinearLayout) getActivity().findViewById(R.id.find_spot_populate);
 
-        Fragment fragment = new DynamicSpot();
-        getFragmentManager().beginTransaction().add(linearLayout.getId(), fragment).commit();
+        if (User.spots.size() > 0) {
+            for (int i = 0; i < User.spots.size(); i++) {
+
+                Bundle innerBundle = new Bundle();
+                innerBundle.putDouble("LAT", User.spots.get(i).getLatitude());
+                innerBundle.putDouble("LONG", User.spots.get(i).getLongitude());
+                innerBundle.putString("EMAIL", User.spots.get(i).getHolder_email());
+                innerBundle.putString("COMMENT", User.spots.get(i).getComments());
+                innerBundle.putInt("POINTS", User.spots.get(i).getPoints());
+                innerBundle.putInt("CAR", User.spots.get(i).getHolder_car());
+                innerBundle.putInt("PERCENT", User.spots.get(i).getHolder_percentage());
+                innerBundle.putInt("SPOTS", User.spots.get(i).getHolder_spots_held());
+                innerBundle.putInt("ID", i);
+
+                System.out.println(User.spots.get(i).getLatitude() + " " + User.spots.get(i).getLatitude() +
+                " " + User.spots.get(i).getHolder_email() + " " + User.spots.get(i).getComments() + " " +
+                User.spots.get(i).getPoints() + " " + User.spots.get(i).getHolder_car() + " " +
+                User.spots.size());
+
+
+                Fragment fragment = new DynamicSpot();
+                fragment.setArguments(innerBundle);
+                getFragmentManager().beginTransaction().add(linearLayout.getId(), fragment).commit();
+
+            }
+        }
 
     }
 

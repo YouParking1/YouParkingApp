@@ -48,6 +48,7 @@
     <string name="icon_ticket">&#xf145;</string>
     <string name="icon_car">&#xf1b9;</string>
     <string name="icon_cart">&#xf07a;</string>
+    <string name="icon_marker">&#xf041;</string>
 
 
     <!-- Navigation stuff -->

@@ -3,6 +3,7 @@ package clink.youparking;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +35,8 @@ public class MainActivity extends AppCompatActivity
         MyBidsFragment.OnFragmentInteractionListener, FindNowFragment.OnFragmentInteractionListener,
         HoldSpotFragment.OnFragmentInteractionListener, FindLaterFragment.OnFragmentInteractionListener, HoldLaterFragment.OnFragmentInteractionListener,
         SignOutFragment.OnFragmentInteractionListener, GMapFragment.OnFragmentInteractionListener, HoldSpotMapFragment.OnFragmentInteractionListener,
-        MapInteraction, HoldLaterMapFragment.OnFragmentInteractionListener, AsyncResponse{
+        MapInteraction, HoldLaterMapFragment.OnFragmentInteractionListener, DynamicSpot.OnFragmentInteractionListener,
+        AsyncResponse{
 
     TextView numTickets;
     Spinner smake, smodel, syear, scolor;
@@ -208,18 +210,11 @@ public class MainActivity extends AppCompatActivity
 
     public void onHoldLater(View view)
     {
-        TextView timePicked = (TextView)findViewById(R.id.timeText);
-        String departTime = timePicked.getText().toString();
-        String finalDepartTime = departTime.replaceAll("[:AMP ]","");
-
         EditText editText = (EditText) findViewById(R.id.holdSpotLaterComments);
         String holdLaterComments = editText.getText().toString();
 
         BackgroundWorker backgroundWorker = new BackgroundWorker(this);
         backgroundWorker.delegate = this;
-
-//        System.out.println("Depart Time: " + finalDepartTime + "\nLatitude: " + User.myLocation.latitude +
-//            "\nLongitude: " + User.myLocation.longitude + "\nComments: " + holdLaterComments);
 
         //TODO: Travis Clinkscales - Change the second argument to something else
         backgroundWorker.execute("hold_later", "bid", Long.toString(User.time), "1", Double.toString(User.myLocation.latitude),
@@ -234,6 +229,42 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void processFinish(String output) throws JSONException {
         outputFromProcess = output;
+    }
+
+    /**
+     * FUNCTIONS FOR FIND NOW
+     * @param view
+     */
+    public void buySpot(View view) {
+        Intent intent = new Intent(this, VehicleRegistrationActivity.class);
+        startActivity(intent);
+    }
+
+    public void moveMap(View view) {
+        int i = 0;
+        boolean notFound = true;
+        while ((i < getSupportFragmentManager().getFragments().size()) && notFound) {
+            String fragmentClass = getSupportFragmentManager().getFragments().get(i).getClass().toString();
+            if (fragmentClass.contains("FindNowFragment")) {
+                notFound = false;
+            }
+            else
+                i++;
+        }
+        int j = 0;
+        while (j < getSupportFragmentManager().getFragments().get(i).getChildFragmentManager().getFragments().size() && !notFound) {
+            if (getSupportFragmentManager().getFragments().get(i).getChildFragmentManager().getFragments().get(j).getClass().toString()
+                    .contains("GMapFragment")) {
+                notFound = true;
+            }
+            else {
+                j++;
+            }
+        }
+
+        GMapFragment gmap = (GMapFragment) getSupportFragmentManager().getFragments().get(i).getChildFragmentManager()
+                .getFragments().get(j);
+        gmap.setToSpotClicked(view.getId());
     }
 
 }

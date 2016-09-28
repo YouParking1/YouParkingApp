@@ -242,6 +242,14 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
     }
 
+    public void setToSpotClicked(int index) {
+        double mLat = User.spots.get(index).getLatitude();
+        double mLong = User.spots.get(index).getLongitude();
+        LatLng loc = new LatLng(mLat, mLong);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+    }
+
     @Override
     public void onStart() {
 
