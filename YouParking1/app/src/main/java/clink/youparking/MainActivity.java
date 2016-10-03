@@ -1,8 +1,6 @@
 package clink.youparking;
 
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -13,40 +11,37 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, VehiclesFragment.OnFragmentInteractionListener,
         MyBidsFragment.OnFragmentInteractionListener, FindNowFragment.OnFragmentInteractionListener,
         HoldSpotFragment.OnFragmentInteractionListener, FindLaterFragment.OnFragmentInteractionListener, HoldLaterFragment.OnFragmentInteractionListener,
         SignOutFragment.OnFragmentInteractionListener, GMapFragment.OnFragmentInteractionListener, HoldSpotMapFragment.OnFragmentInteractionListener,
-        MapInteraction, HoldLaterMapFragment.OnFragmentInteractionListener, DynamicSpot.OnFragmentInteractionListener,
-        AsyncResponse{
+        MapInteraction, HoldLaterMapFragment.OnFragmentInteractionListener, DynamicSpot.OnFragmentInteractionListener, Achievements.OnFragmentInteractionListener,
+        AsyncResponse {
 
     TextView numTickets;
-    Spinner smake, smodel, syear, scolor;
     String outputFromProcess = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
+
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
@@ -79,12 +74,12 @@ public class MainActivity extends AppCompatActivity
         text.setTypeface(font);
 
         numTickets = (TextView)findViewById(R.id.numTickets);
-
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -188,6 +183,12 @@ public class MainActivity extends AppCompatActivity
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, new HoldLaterMapFragment()).commit();
+    }
+
+    public void goToAchievements(View view)
+    {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new Achievements()).commit();
     }
 
     /**

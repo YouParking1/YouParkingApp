@@ -5,7 +5,6 @@
     tools:context=".DynamicSpot"
     android:layout_marginBottom="1dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <com.daimajia.swipe.SwipeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

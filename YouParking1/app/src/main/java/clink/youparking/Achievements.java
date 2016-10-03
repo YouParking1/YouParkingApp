@@ -3,24 +3,20 @@ package clink.youparking;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
+ * {@link Achievements.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
+ * Use the {@link Achievements#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements AsyncResponse {
+public class Achievements extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,11 +26,9 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     private String mParam1;
     private String mParam2;
 
-    TextView findNowSpotsAvailable, findLaterSpotsAvailable, welcomeMessage;
-
     private OnFragmentInteractionListener mListener;
 
-    public HomeFragment() {
+    public Achievements() {
         // Required empty public constructor
     }
 
@@ -44,11 +38,11 @@ public class HomeFragment extends Fragment implements AsyncResponse {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
+     * @return A new instance of fragment Achievements.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+    public static Achievements newInstance(String param1, String param2) {
+        Achievements fragment = new Achievements();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,7 +53,6 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -70,19 +63,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        welcomeMessage = (TextView) getView().findViewById(R.id.welcomeText);
-        welcomeMessage.setText("Welcome, " + User.fName + " " + User.lName);
-
-        BackgroundWorker backgroundWorker = new BackgroundWorker(getActivity());
-        backgroundWorker.delegate = this;
-        backgroundWorker.execute("home", User.school);
+        return inflater.inflate(R.layout.fragment_achievements, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -109,17 +90,6 @@ public class HomeFragment extends Fragment implements AsyncResponse {
         mListener = null;
     }
 
-    @Override
-    public void processFinish(String output) {
-
-        System.out.println("Output: " + output);
-
-        findNowSpotsAvailable = (TextView)getView().findViewById(R.id.find_now_spots_available);
-        findLaterSpotsAvailable = (TextView)getView().findViewById(R.id.find_later_spots_available);
-        findNowSpotsAvailable.setText(output);
-//        findLaterSpotsAvailable.setText(output);
-    }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -134,6 +104,4 @@ public class HomeFragment extends Fragment implements AsyncResponse {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-
 }

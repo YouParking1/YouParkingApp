@@ -36,9 +36,11 @@
     <string name="allow_characters_for_email">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.!#$%&amp;\'*+-/=?^_`{|}~</string>
 
     <!-- Home Page -->
-    <string name="home_spots_text">Spots Available</string>
+    <string name="home_welcome"><u><b>Welcome, User User</b></u></string>
+    <string name="home_spots_text"><u><b>Spots</b></u></string>
     <string name="home_spots_number">0</string>
-    <string name="home_achievements_text"><u>Achievements</u></string>
+    <string name="home_stats_text"><u><b>Statistics</b></u></string>
+    <string name="home_achievements_text"><u><b>Achievements</b></u></string>
 
     <!-- Map Strings -->
     <string name="title_activity_general_map">Map Location</string>
@@ -1022,7 +1024,7 @@
         <item>University of Colorado Denver/Anschutz Medical Campus</item>
 
 
-        <item>University of Colorado Colorado Springs</item>
+        <item>University of Colorado, Colorado Springs</item>
 
 
         <item>University of Colorado Boulder</item>
