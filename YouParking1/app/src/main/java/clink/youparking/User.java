@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 public class User {
 
-    public static String email = null;
-    public static String school = null;
+    public static String email = null; // Retrieve the logged user's email
+    public static String school = null; // Retrieve the logged user's school
     public static String fName = null;
     public static String lName = null;
 

@@ -46,13 +46,15 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+
     private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 1;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+
     private double myLat = 0, myLong = 0;
+    private double holdLat = 0, holdLong = 0;
+
     public static final String TAG = GMapFragment.class.getSimpleName();
     private LocationRequest mLocationRequest;
-
-    private Marker myMarker;
 
     private String mapType;
 
@@ -99,7 +101,20 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
         mapType = getArguments().getString("TYPE");
 
-        if (mapType.equals("HOLD")) {
+        if (mapType.equals("HOLD")) { //IF USER IS HOLDING A SPOT
+            if (mGoogleApiClient == null) {
+                mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .addApi(LocationServices.API)
+                        .build();
+            }
+            mLocationRequest = LocationRequest.create()
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                    .setInterval(10 * 1000)
+                    .setFastestInterval(1 * 1000);
+        }
+        else if (mapType.equals("BOUGHT")) { // IF USER IS JUST BOUGHT A SPOT
             if (mGoogleApiClient == null) {
                 mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                         .addConnectionCallbacks(this)
@@ -185,7 +200,9 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onLocationChanged(Location location) {
+        if (mapType.equals("BOUGHT")) {
 
+        }
     }
 
     @Override
@@ -210,12 +227,19 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             double longs [] = getArguments().getDoubleArray("LONGS");
             int points [] = getArguments().getIntArray("POINTS");
 
-            ArrayList<Marker> markers = new ArrayList<>();
-
             for (int i = 0; i < size; i++) {
                 LatLng latLng = new LatLng(lats[i], longs[i]);
                 mMap.addMarker(new MarkerOptions().position(latLng).title(Integer.toString(points[i])));
             }
+        }
+        else if (mapType.equals("BOUGHT")) {
+            holdLat = getActivity().getIntent().getExtras().getDouble("LAT");
+            holdLong = getActivity().getIntent().getExtras().getDouble("LONG");
+
+            LatLng loc = new LatLng(holdLat, holdLong);
+            mMap.addMarker(new MarkerOptions().position(loc));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
         }
     }
 
@@ -235,11 +259,13 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     public void setCurrentLoc() {
-        LatLng loc = new LatLng(myLat, myLong);
-        User.myLocation = loc;
-        mMap.addMarker(new MarkerOptions().position(loc));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+        if (mapType.equals("HOLD")) {
+            LatLng loc = new LatLng(myLat, myLong);
+            User.myLocation = loc;
+            mMap.addMarker(new MarkerOptions().position(loc));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+        }
     }
 
     public void setToSpotClicked(int index) {
@@ -252,9 +278,16 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onStart() {
-
-        if (mapType.equals("HOLD"))
+        if (mapType.equals("HOLD") || mapType.equals("BOUGHT"))
             mGoogleApiClient.connect();
         super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 }

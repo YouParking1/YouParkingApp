@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed(); Disabled so the user cannot return to the login activity.
         }
     }
 
@@ -236,8 +236,31 @@ public class MainActivity extends AppCompatActivity
      * @param view
      */
     public void buySpot(View view) {
-        Intent intent = new Intent(this, VehicleRegistrationActivity.class);
-        startActivity(intent);
+        if (User.spots.get(view.getId()).getPoints() <= User.points) {
+            System.out.println("Email: " + User.email + " " + "Holder: " + User.spots.get(view.getId()).getHolder_email() +
+                " " + "Spots: " + User.spots.get(view.getId()).getPoints());
+
+            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+            backgroundWorker.delegate = this;
+            backgroundWorker.execute("exchange", User.spots.get(view.getId()).getHolder_email(),
+                    Integer.toString(User.spots.get(view.getId()).getPoints()));
+
+            Intent intent = new  Intent(this, AaronTestActivity.class);
+            startActivity(intent);
+        }
+        else {
+            Toast toast = Toast.makeText(this, "Not Enough Points", Toast.LENGTH_LONG);
+            toast.show();
+        }
+//        double sLat, sLong;
+//        sLat = User.spots.get(view.getId()).getLatitude();
+//        sLong = User.spots.get(view.getId()).getLongitude();
+//
+//        Intent intent = new Intent(this, FoundSpotActivity.class);
+//        intent.putExtra("LAT", sLat);
+//        intent.putExtra("LONG", sLong);
+//        startActivity(intent);
+
     }
 
     public void moveMap(View view) {
@@ -252,7 +275,7 @@ public class MainActivity extends AppCompatActivity
                 i++;
         }
         int j = 0;
-        while (j < getSupportFragmentManager().getFragments().get(i).getChildFragmentManager().getFragments().size() && !notFound) {
+        while ((j < getSupportFragmentManager().getFragments().get(i).getChildFragmentManager().getFragments().size()) && !notFound) {
             if (getSupportFragmentManager().getFragments().get(i).getChildFragmentManager().getFragments().get(j).getClass().toString()
                     .contains("GMapFragment")) {
                 notFound = true;
@@ -266,5 +289,6 @@ public class MainActivity extends AppCompatActivity
                 .getFragments().get(j);
         gmap.setToSpotClicked(view.getId());
     }
+
 
 }

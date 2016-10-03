@@ -20,25 +20,30 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        emailEt = (EditText) findViewById(R.id.email);
+        passwordEt = (EditText) findViewById(R.id.pass);
+
         SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
         String Username = preferences.getString("Username", "");
         String fName = preferences.getString("first_name", "");
         String lName = preferences.getString("last_name", "");
         String school = preferences.getString("University", "");
+        String pass = preferences.getString("Password", "");
         if(Username.length() != 0)
         {
-            User.email = Username;
-            User.fName = fName;
-            User.lName = lName; //DELETE THIS COMMENT
-            User.school = school;
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
+            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+            backgroundWorker.delegate = this;
+            backgroundWorker.execute("login", Username, pass);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        emailEt = (EditText) findViewById(R.id.email);
-        passwordEt = (EditText) findViewById(R.id.pass);
+////            User.email = Username;
+////            User.fName = fName;
+////            User.lName = lName; //DELETE THIS COMMENT
+////            User.school = school;
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+        }
     }
 
     public void goToRegistration(View view)
@@ -75,13 +80,16 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
 
         //System.out.println(User.email + " " + User.school + " " + User.fName + " " + User.lName + " " + User.points);
 
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("Username", User.email);
-        editor.putString("first_name", User.fName);
-        editor.putString("last_name", User.lName);
-        editor.putString("University", User.school);
-        editor.commit();
+        if (getPreferences(Context.MODE_PRIVATE).getString("Username", "").length() <= 0) {
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("Username", User.email);
+            editor.putString("first_name", User.fName);
+            editor.putString("last_name", User.lName);
+            editor.putString("University", User.school);
+            editor.putString("Password", passwordEt.getText().toString());
+            editor.commit();
+        }
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
