@@ -191,8 +191,6 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
             String selectedYear = syear.getSelectedItem().toString();
             String selectedColor = scolor.getSelectedItem().toString();
 
-            //System.out.println("\n\nMake: " + selectedMake + "\nModel: " + selectedModel + "\nYear: " + selectedYear + "\nColor: " + selectedColor + "\n\n");
-
             String type = "vehicleRegister";
             BackgroundWorker backgroundWorker = new BackgroundWorker(this);
             backgroundWorker.delegate = this;
