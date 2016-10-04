@@ -14,13 +14,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 public class VehicleRegistrationActivity extends AppCompatActivity implements AsyncResponse {
 
     Spinner smake, smodel, syear, scolor;
-    String MakeTxt, ModelTxt, YearTxt;
+    Button scar;
+    String MakeTxt, ModelTxt;
     public String AssetJSONFile(String filename, Context context) throws IOException {
         //AssetManager manager = context.getAssets();
         InputStream file = getAssets().open(filename);
@@ -181,6 +183,7 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
         smodel = (Spinner)findViewById(R.id.sModel);
         syear = (Spinner) findViewById(R.id.sYear);
         scolor = (Spinner)findViewById(R.id.sColor);
+        scar = (Button)findViewById(R.id.imageBtn);
 
         //TODO : Travis Clinkscales - make if/else if statement for each case and have alert for each
         if(smake != null && smake.getSelectedItem() != null && smodel != null && smodel.getSelectedItem() != null
@@ -190,6 +193,7 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
             String selectedModel = smodel.getSelectedItem().toString();
             String selectedYear = syear.getSelectedItem().toString();
             String selectedColor = scolor.getSelectedItem().toString();
+//            String selectedCar = scar.getSelectedItem().toString();
 
             String type = "vehicleRegister";
             BackgroundWorker backgroundWorker = new BackgroundWorker(this);

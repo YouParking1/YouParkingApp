@@ -22,12 +22,12 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/welcomeText"
+                android:text="Welcome, User User"
                 android:textSize="25sp"
                 android:textColor="#000"
                 android:layout_marginTop="15dp"
                 android:layout_gravity="center_horizontal"
                 android:textStyle="bold" />
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -233,6 +233,15 @@
                     android:id="@+id/stat_percentage"
                     android:gravity="center_horizontal"
                     android:textColor="#000"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text=" %"
+                    android:id="@+id/textView17"
+                    android:gravity="center_horizontal"
+                    android:textColor="#000"/>
+
 
             </LinearLayout>
 

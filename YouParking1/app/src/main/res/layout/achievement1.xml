@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Hold 5 Spots"
         android:id="@+id/textView8"
         android:layout_gravity="center_horizontal"
@@ -21,10 +21,19 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/knownAchievement1"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ic_vehicles"
-        android:onClick="goToAchievements"/>
+        android:onClick="goToAchievements"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/unknownAchievement1"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/ic_unknown"
+        android:onClick="goToAchievements" />
 
     <LinearLayout
         android:layout_width="wrap_content"

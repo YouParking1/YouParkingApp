@@ -18,9 +18,18 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/knownAchievement4"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ic_home"
+        android:onClick="goToAchievements"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/unknownAchievement4"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/ic_unknown"
         android:onClick="goToAchievements" />
 
     <LinearLayout
