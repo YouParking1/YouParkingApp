@@ -1,8 +1,11 @@
 package clink.youparking;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.AttributeSet;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,7 +26,9 @@ public class AaronTestActivity extends AppCompatActivity {
     {
         try {
             mSocket = IO.socket("http://108.167.99.14:88");
-        } catch (URISyntaxException e) {}
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
@@ -45,9 +50,16 @@ public class AaronTestActivity extends AppCompatActivity {
 
 
                     //String combined = lat + " " + mLong;
-                    System.out.println(args.toString() + " *&*&*&*&*&*&*&*");
+                    JSONObject data = (JSONObject) args;
+                    String message = "";
+                    try {
+                        message = data.getString("message");
+                    } catch (JSONException e) {
+                        return;
+                    }
+
                     TextView myTextView = (TextView) findViewById(R.id.from_server);
-                    myTextView.setText(args.toString());
+                    myTextView.setText(message);
                 }
             });
         }
@@ -58,17 +70,20 @@ public class AaronTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aaon_test);
 
-        mSocket.on("new message", onNewMessage);
         mSocket.connect();
+        mSocket.on("message", onNewMessage);
+
+        attemptSend();
     }
 
     private void attemptSend() {
-        String message = mInputMessageView.getText().toString().trim();
-        if (TextUtils.isEmpty(message)) {
-            return;
-        }
-        mInputMessageView.setText("");
-        mSocket.emit("new message", message);
+        //String message = mInputMessageView.getText().toString().trim();
+//        if (TextUtils.isEmpty(message)) {
+//            return;
+//        }
+        //mInputMessageView.setText("Bob is cool");
+        String message = "Hello Frank";
+        mSocket.emit("message", message);
     }
 
     @Override
@@ -78,4 +93,5 @@ public class AaronTestActivity extends AppCompatActivity {
         mSocket.disconnect();
         mSocket.off("new message", onNewMessage);
     }
+
 }

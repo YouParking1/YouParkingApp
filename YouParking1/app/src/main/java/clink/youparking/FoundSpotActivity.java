@@ -9,14 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
-
-import java.io.IOException;
-
 public class FoundSpotActivity extends AppCompatActivity implements GMapFragment.OnFragmentInteractionListener {
     int spotID = 0;
 
@@ -53,4 +45,5 @@ public class FoundSpotActivity extends AppCompatActivity implements GMapFragment
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 }
