@@ -22,6 +22,8 @@ public class AaronTestActivity extends AppCompatActivity {
 
     private EditText mInputMessageView;
 
+    private String room = null;
+
     private Socket mSocket;
     {
         try {
@@ -70,9 +72,18 @@ public class AaronTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aaon_test);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            room = extras.getString("ROOM");
+        }
+        System.out.println(room);
+
         mSocket.connect();
         mSocket.on("message", onNewMessage);
 
+
+        loginServer();
+        joinRoom();
         attemptSend();
     }
 
@@ -84,6 +95,22 @@ public class AaronTestActivity extends AppCompatActivity {
         //mInputMessageView.setText("Bob is cool");
         String message = "Hello Frank";
         mSocket.emit("message", message);
+    }
+
+    private void loginServer() {
+        JSONObject loginInfo = new JSONObject();
+        try {
+            loginInfo.put("email", User.email);
+        } catch (JSONException e) {
+
+        }
+        mSocket.emit("login", User.email);
+    }
+
+    private void joinRoom() {
+        if (room != null) {
+            mSocket.emit("joinRoom", room);
+        }
     }
 
     @Override

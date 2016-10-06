@@ -69,19 +69,11 @@
             android:label="@string/title_activity_maps" />
         <activity android:name=".VehicleRegistrationActivity" />
         <activity android:name=".RegistrationActivity" />
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
         <activity
             android:name=".FoundSpotActivity"
             android:label="@string/title_activity_found_spot"
             android:theme="@style/AppBaseTheme" />
-<<<<<<< HEAD
         <activity android:name=".AaronTestActivity"></activity>
-=======
-        <activity android:name=".AaronTestActivity" />
->>>>>>> origin/master
         <activity android:name=".VerifyEmail" />
     </application>
 

@@ -248,6 +248,8 @@ public class MainActivity extends AppCompatActivity
             //TODO: UNCOMMENT ABOVE CODE
 
             Intent intent = new  Intent(this, AaronTestActivity.class);
+            intent.putExtra("ROOM", User.spots.get(view.getId()).getHolder_email());
+            System.out.println(User.spots.get(view.getId()).getHolder_email());
             startActivity(intent);
         }
         else {
@@ -265,6 +267,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+    /**
+     * Adjusts map to clicked HeldSpot in the FindNowMapFragment
+     * @param view
+     */
     public void moveMap(View view) {
         int i = 0;
         boolean notFound = true;
