@@ -3,6 +3,7 @@ package clink.youparking;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 import com.github.nkzawa.socketio.client.IO;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,6 +71,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     private int spotID = -1;
 
     JSONObject jsonSend;
+    private PolylineOptions mPolylineOptions;
+
     private Socket mSocket;
     {
             try {
@@ -266,6 +270,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             mMap.addMarker(new MarkerOptions().position(loc).title("SPOT DESTINATION"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
+            initializeMap();
         }
     }
 
@@ -365,10 +370,21 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     private void realTimeMap(double newLat, double newLong) {
 
             LatLng loc = new LatLng(newLat, newLong);
+            updatePolyline(loc);
             mMap.addMarker(new MarkerOptions().position(loc).title("NEW LOCATION"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
 
+    }
+
+    public void updatePolyline(LatLng mlatlng) {
+        mMap.clear();
+        mMap.addPolyline(mPolylineOptions.add(mlatlng));
+    }
+
+    private void initializeMap() {
+        mPolylineOptions = new PolylineOptions();
+        mPolylineOptions.color(Color.BLUE).width(10);
     }
 
     /**
@@ -384,6 +400,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) arg;
+
+                    System.out.println(data.toString());
                     double newLat = 0;
                     double newLong = 0;
 
