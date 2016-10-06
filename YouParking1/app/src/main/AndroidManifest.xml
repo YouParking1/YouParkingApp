@@ -75,6 +75,8 @@
             android:theme="@style/AppBaseTheme" />
         <activity android:name=".AaronTestActivity"></activity>
         <activity android:name=".VerifyEmail" />
+        <activity android:name=".UploadVehicleActivity" />
+        <activity android:name=".ViewImage" />
     </application>
 
 </manifest>

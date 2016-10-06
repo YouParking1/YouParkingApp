@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -183,7 +185,6 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
         smodel = (Spinner)findViewById(R.id.sModel);
         syear = (Spinner) findViewById(R.id.sYear);
         scolor = (Spinner)findViewById(R.id.sColor);
-        scar = (Button)findViewById(R.id.imageBtn);
 
         //TODO : Travis Clinkscales - make if/else if statement for each case and have alert for each
         if(smake != null && smake.getSelectedItem() != null && smodel != null && smodel.getSelectedItem() != null
@@ -193,16 +194,12 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
             String selectedModel = smodel.getSelectedItem().toString();
             String selectedYear = syear.getSelectedItem().toString();
             String selectedColor = scolor.getSelectedItem().toString();
-//            String selectedCar = scar.getSelectedItem().toString();
 
             String type = "vehicleRegister";
             BackgroundWorker backgroundWorker = new BackgroundWorker(this);
             backgroundWorker.delegate = this;
             backgroundWorker.execute(type, selectedMake, selectedModel, selectedYear,
                     selectedColor);
-
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
         }
         else
         {
@@ -217,10 +214,11 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
 
     @Override
     public void processFinish(String output) {
-//        if (output.contains("success")) {
-//            Intent intent = new Intent(this, MainActivity.class);
-//            startActivity(intent);
-//        }
+
+        System.out.println("Vehicle Registration Output: " + output);
+
+        Intent intent = new Intent(this, UploadVehicleActivity.class);
+        startActivity(intent);
     }
 }
 

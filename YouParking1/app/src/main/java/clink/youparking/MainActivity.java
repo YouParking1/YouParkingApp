@@ -227,6 +227,12 @@ public class MainActivity extends AppCompatActivity
         newFragment.show(getFragmentManager(), "TimePicker");
     }
 
+    public void goToDownload(View view)
+    {
+        Intent intent = new Intent(this, ViewImage.class);
+        startActivity(intent);
+    }
+
     @Override
     public void processFinish(String output) throws JSONException {
         outputFromProcess = output;

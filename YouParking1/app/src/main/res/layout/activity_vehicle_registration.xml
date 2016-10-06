@@ -37,7 +37,6 @@
             android:layout_height="match_parent"
             android:id="@+id/sMake"
             android:spinnerMode="dropdown"
-            android:layout_below="@+id/textView"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:paddingTop="2dp"
@@ -103,20 +102,13 @@
             android:paddingRight="2dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="30dp"
             android:background="@android:drawable/btn_dropdown" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Load Picture..."
-            android:id="@+id/imageBtn"
-            android:layout_marginBottom="10dp"
-            android:onClick="goToPhotos" />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Start Parking!"
+            android:text="Upload Picture!"
             android:id="@+id/regVehicleBtn"
             android:onClick="saveVehicle" />
     </LinearLayout>
