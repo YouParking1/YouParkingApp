@@ -31,6 +31,24 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
+import com.github.nkzawa.socketio.client.IO;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,6 +75,18 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     private LocationRequest mLocationRequest;
 
     private String mapType;
+    private String room = null; // FOR USE WITH REAL TIME NAVIGATION TRACKING
+
+    private int spotID = -1;
+
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket("http//108.167.99.14:88");
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -126,6 +156,9 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                     .setInterval(10 * 1000)
                     .setFastestInterval(1 * 1000);
+
+
+            spotID = getParentFragment().getArguments().getInt("spotID");
         }
         else {
             // TODO: ADD CODE FOR FINDING SCHOOLS LOCATION AND SETTING CENTRAL VIEW TO THOSE COORDINATES
@@ -139,8 +172,6 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_gmap, container, false);
-
-
 
         return view;
 
@@ -290,4 +321,30 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             mGoogleApiClient.disconnect();
         }
     }
+
+    /**
+     * If location arrives from Socket.IO
+     */
+    private Emitter.Listener onNewMessage = new Emitter.Listener() {
+
+        @Override
+        public void call(Object... args) {
+            final Object arg = args[0];
+            getActivity().runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) arg;
+                    String message = "";
+
+                    try {
+                        message = data.getString("message");
+                    } catch (JSONException e) {
+                        return;
+                    }
+
+                }
+            });
+        }
+    };
 }
