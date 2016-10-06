@@ -242,6 +242,7 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
             String login_url = "http://www.troyparking.com/home.php";
             try {
                 String school = params[1];
+                String email = User.email;
                 URL url = new URL(login_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -249,7 +250,8 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
                 httpURLConnection.setDoInput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data = URLEncoder.encode("School", "UTF-8") + "=" + URLEncoder.encode(school, "UTF-8");
+                String post_data = URLEncoder.encode("School", "UTF-8") + "=" + URLEncoder.encode(school, "UTF-8")+"&"
+                        +URLEncoder.encode("email", "UTF-8")+"="+URLEncoder.encode(email, "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
