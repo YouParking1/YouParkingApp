@@ -21,10 +21,10 @@ public class FoundSpotActivity extends AppCompatActivity implements GMapFragment
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            spotID = extras.getInt("SPOT");
-        }
+//        Bundle extras = getIntent().getExtras();
+//        if (extras != null) {
+//            spotID = extras.getInt("SPOT");
+//        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -240,6 +240,8 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * FUNCTIONS FOR FIND NOW
+     *
+     * LAUNCHES FoundSpotActivity
      * @param view
      */
     public void buySpot(View view) {
@@ -253,9 +255,8 @@ public class MainActivity extends AppCompatActivity
 //                    Integer.toString(User.spots.get(view.getId()).getPoints()));
             //TODO: UNCOMMENT ABOVE CODE
 
-            Intent intent = new  Intent(this, AaronTestActivity.class);
-            intent.putExtra("ROOM", User.spots.get(view.getId()).getHolder_email());
-            System.out.println(User.spots.get(view.getId()).getHolder_email());
+            Intent intent = new  Intent(this, FoundSpotActivity.class);
+            intent.putExtra("SpotID", view.getId());
             startActivity(intent);
         }
         else {

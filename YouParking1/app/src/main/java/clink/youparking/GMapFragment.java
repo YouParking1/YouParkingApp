@@ -29,17 +29,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
-
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 import com.github.nkzawa.socketio.client.IO;
@@ -79,13 +68,14 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
     private int spotID = -1;
 
+    JSONObject jsonSend;
     private Socket mSocket;
     {
-        try {
-            mSocket = IO.socket("http//108.167.99.14:88");
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+            try {
+                mSocket = IO.socket("http://108.167.99.14:88");
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
     }
 
     // TODO: Rename parameter arguments, choose names that match
@@ -158,7 +148,14 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                     .setFastestInterval(1 * 1000);
 
 
-            spotID = getParentFragment().getArguments().getInt("spotID");
+            Bundle extras = getActivity().getIntent().getExtras();
+            spotID = extras.getInt("SpotID");
+
+            mSocket.connect();
+            mSocket.on("message", onNewMessage);
+            mSocket.emit("login", User.email);
+            mSocket.emit("joinRoom", User.spots.get(spotID).getHolder_email());
+
         }
         else {
             // TODO: ADD CODE FOR FINDING SCHOOLS LOCATION AND SETTING CENTRAL VIEW TO THOSE COORDINATES
@@ -220,20 +217,18 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         myLat = mLastLocation.getLatitude();
         myLong = mLastLocation.getLongitude();
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        if (mapType.equals("BOUGHT")) {
+            //IF BOUGHT, DON'T DISABLE LOCATION UPDATES
+        }
+        else {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
         setCurrentLoc();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
 
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        if (mapType.equals("BOUGHT")) {
-
-        }
     }
 
     @Override
@@ -264,11 +259,11 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             }
         }
         else if (mapType.equals("BOUGHT")) {
-            holdLat = getActivity().getIntent().getExtras().getDouble("LAT");
-            holdLong = getActivity().getIntent().getExtras().getDouble("LONG");
+            holdLat = User.spots.get(spotID).getLatitude();
+            holdLong = User.spots.get(spotID).getLongitude();
 
             LatLng loc = new LatLng(holdLat, holdLong);
-            mMap.addMarker(new MarkerOptions().position(loc));
+            mMap.addMarker(new MarkerOptions().position(loc).title("SPOT DESTINATION"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
         }
@@ -317,9 +312,63 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onStop() {
         super.onStop();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+
+        mSocket.disconnect();
+        mSocket.off("new message", onNewMessage);
+    }
+
+
+    /**
+     *
+     * onLocationChanged will take users location change, format to JSONObject and send data to
+     * Socket.IO
+     *
+     *
+     * @param location
+     */
+    @Override
+    public void onLocationChanged(Location location) {
+        jsonSend = new JSONObject();
+
+        if (mapType.equals("BOUGHT")) {
+            double newLat = location.getLatitude();
+            double newLong = location.getLongitude();
+
+            try {
+                jsonSend.put("LAT", newLat);
+                jsonSend.put("LONG", newLong);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+            mSocket.emit("message", jsonSend); //EMIT NEW LOCATION AS JSON
+            //realTimeMap(newLat, newLong);
+        }
+    }
+
+
+    /**
+     * Used to update locations of holder and buyer in real time.
+     *
+     *
+     */
+    private void realTimeMap(double newLat, double newLong) {
+
+            LatLng loc = new LatLng(newLat, newLong);
+            mMap.addMarker(new MarkerOptions().position(loc).title("NEW LOCATION"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+
     }
 
     /**
@@ -335,12 +384,18 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) arg;
-                    String message = "";
+                    double newLat = 0;
+                    double newLong = 0;
 
                     try {
-                        message = data.getString("message");
+                        newLat = data.getDouble("LAT");
+                        newLong = data.getDouble("LONG");
                     } catch (JSONException e) {
-                        return;
+                        throw new RuntimeException(e);
+                    }
+
+                    if (mMap != null) {
+                        realTimeMap(newLat, newLong);
                     }
 
                 }

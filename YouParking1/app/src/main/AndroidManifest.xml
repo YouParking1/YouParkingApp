@@ -72,7 +72,9 @@
         <activity
             android:name=".FoundSpotActivity"
             android:label="@string/title_activity_found_spot"
-            android:theme="@style/AppBaseTheme" />
+            android:theme="@style/AppBaseTheme"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".AaronTestActivity"></activity>
         <activity android:name=".VerifyEmail" />
         <activity android:name=".UploadVehicleActivity" />
