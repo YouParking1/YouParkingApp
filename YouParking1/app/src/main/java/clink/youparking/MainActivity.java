@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity
         HoldSpotFragment.OnFragmentInteractionListener, FindLaterFragment.OnFragmentInteractionListener, HoldLaterFragment.OnFragmentInteractionListener,
         SignOutFragment.OnFragmentInteractionListener, GMapFragment.OnFragmentInteractionListener, HoldSpotMapFragment.OnFragmentInteractionListener,
         MapInteraction, HoldLaterMapFragment.OnFragmentInteractionListener, DynamicSpot.OnFragmentInteractionListener, Achievements.OnFragmentInteractionListener,
-        AsyncResponse {
+        DynamicVehicleFragment.OnFragmentInteractionListener, AsyncResponse {
 
     TextView numTickets;
     String outputFromProcess = null;
@@ -227,11 +227,11 @@ public class MainActivity extends AppCompatActivity
         newFragment.show(getFragmentManager(), "TimePicker");
     }
 
-    public void goToDownload(View view)
-    {
-        Intent intent = new Intent(this, ViewImage.class);
-        startActivity(intent);
-    }
+//    public void goToDownload(View view)
+//    {
+//        Intent intent = new Intent(this, ViewImage.class);
+//        startActivity(intent);
+//    }
 
     @Override
     public void processFinish(String output) throws JSONException {

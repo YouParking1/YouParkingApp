@@ -1,26 +1,30 @@
 package clink.youparking;
 
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +34,11 @@ import java.util.ArrayList;
  * Use the {@link VehiclesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VehiclesFragment extends Fragment {
+public class VehiclesFragment extends Fragment implements AsyncResponse {
+
+    TextView vehicleMakeText, vehicleModelText, vehicleYearText, vehicleColorText;
+    ImageView vehicleImage;
+    private RequestHandler requestHandler;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,15 +83,19 @@ public class VehiclesFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_vehicles, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        BackgroundWorker backgroundWorker = new BackgroundWorker(getActivity());
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute("getVehicles");
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -110,13 +122,87 @@ public class VehiclesFragment extends Fragment {
         mListener = null;
     }
 
-//    @Override
-//    public void processFinish(String output) throws JSONException {
-//        if (output.contains("success")) {
-//            Intent intent = new Intent(getActivity(), MainActivity.class);
-//            startActivity(intent);
+//    private void getImage(int id) {
+//        class GetImage extends AsyncTask<String,Void,Bitmap> {
+////            ProgressDialog loading;
+//
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+////                loading = ProgressDialog.show(getActivity(), "Uploading...", null,true,true);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Bitmap b) {
+//                super.onPostExecute(b);
+////                loading.dismiss();
+//                vehicleImage.setImageBitmap(b);
+//            }
+//
+//            @Override
+//            protected Bitmap doInBackground(String... params) {
+//                String id = params[0];
+//                String add = "http://www.troyparking.com/getImage.php?id="+id;
+//                URL url = null;
+//                Bitmap image = null;
+//                try {
+//                    url = new URL(add);
+//                    image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                return image;
+//            }
 //        }
+//
+//        GetImage gi = new GetImage();
+//        gi.execute(Integer.toString(id));
 //    }
+
+    @Override
+    public void processFinish(String output) throws JSONException {
+
+        JSONArray jsonArray = new JSONArray(output);
+
+        if (!User.vehicles.isEmpty()) {
+            User.vehicles.clear();
+        }
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            User.vehicles.add(new Vehicles (jsonObject.getInt("id"), jsonObject.getString("Make"),
+            jsonObject.getString("Model"), jsonObject.getInt("Year"), jsonObject.getString("Color")));
+        }
+
+        LinearLayout linearLayout = (LinearLayout) getActivity().findViewById(R.id.populate_vehicles);
+
+        if (User.vehicles.size() > 0) {
+            for (int i = 0; i < User.vehicles.size(); i++) {
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("VEHICLEID", User.vehicles.get(i).getId());
+                bundle.putString("MAKE", User.vehicles.get(i).getMake());
+                bundle.putString("MODEL", User.vehicles.get(i).getModel());
+                bundle.putInt("YEAR", User.vehicles.get(i).getYear());
+                bundle.putString("COLOR", User.vehicles.get(i).getColor());
+                bundle.putInt("ID", i);
+
+                System.out.println("VehicleID: " + User.vehicles.get(i).getId());
+                System.out.println("Make: " + User.vehicles.get(i).getMake());
+                System.out.println("Model: " + User.vehicles.get(i).getModel());
+                System.out.println("Year: " + User.vehicles.get(i).getYear());
+                System.out.println("Color: " + User.vehicles.get(i).getColor());
+                System.out.println("ID: " + i);
+                System.out.println("Size of Array: " + User.vehicles.size());
+
+                Fragment fragment = new DynamicVehicleFragment();
+                fragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().add(linearLayout.getId(), fragment).commit();
+            }
+        }
+    }
 
     /**
      * This interface must be implemented by activities that contain this

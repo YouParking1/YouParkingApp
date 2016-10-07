@@ -27,5 +27,6 @@ public class User {
     public static long time = 0;
 
     public static ArrayList<Spot> spots = new ArrayList<>();
+    public static ArrayList<Vehicles> vehicles = new ArrayList<>();
 
 }

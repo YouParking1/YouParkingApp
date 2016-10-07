@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <Button
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Download Image"
-        android:onClick="goToDownload" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Vehicles"
+            android:layout_marginTop="10dp"
+            android:id="@+id/vehiclesText"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/populate_vehicles"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
