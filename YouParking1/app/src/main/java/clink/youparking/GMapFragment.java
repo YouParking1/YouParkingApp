@@ -70,6 +70,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
     private int spotID = -1;
 
+    LatLng currentLoc;
+
     JSONObject jsonSend;
     private PolylineOptions mPolylineOptions;
 
@@ -138,7 +140,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                     .setInterval(10 * 1000)
                     .setFastestInterval(1 * 1000);
         }
-        else if (mapType.equals("BOUGHT")) { // IF USER IS JUST BOUGHT A SPOT
+        else if (mapType.equals("BOUGHT")) {
             if (mGoogleApiClient == null) {
                 mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                         .addConnectionCallbacks(this)
@@ -155,11 +157,33 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             Bundle extras = getActivity().getIntent().getExtras();
             spotID = extras.getInt("SpotID");
 
+            currentLoc = new LatLng(User.myLocation.latitude, User.myLocation.longitude);
+
             mSocket.connect();
             mSocket.on("message", onNewMessage);
             mSocket.emit("login", User.email);
             mSocket.emit("joinRoom", User.spots.get(spotID).getHolder_email());
 
+        }
+        else if (mapType.equals("HOLDING")) {
+            if (mGoogleApiClient == null) {
+                mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .addApi(LocationServices.API)
+                        .build();
+            }
+            mLocationRequest = LocationRequest.create()
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                    .setInterval(10 * 1000)
+                    .setFastestInterval(1 * 1000);
+
+            currentLoc = new LatLng(User.myLocation.latitude, User.myLocation.longitude);
+
+            mSocket.connect();
+            mSocket.on("message", onNewMessage);
+            mSocket.emit("login", User.email);
+            mSocket.emit("joinRoom", User.email);
         }
         else {
             // TODO: ADD CODE FOR FINDING SCHOOLS LOCATION AND SETTING CENTRAL VIEW TO THOSE COORDINATES
@@ -221,8 +245,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         myLat = mLastLocation.getLatitude();
         myLong = mLastLocation.getLongitude();
-        if (mapType.equals("BOUGHT")) {
-            //IF BOUGHT, DON'T DISABLE LOCATION UPDATES
+        if (mapType.equals("BOUGHT") || mapType.equals("HOLDING")) {
+            //IF BOUGHT OR HOLDING, DON'T DISABLE LOCATION UPDATES
         }
         else {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -247,9 +271,9 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        LatLng troy = new LatLng(31.7988, -85.9574);
+        LatLng troy = new LatLng(39.8282, -98.5795);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(troy));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(3.0f));
 
         if (mapType.equals("FIND")) {
             int size = getArguments().getDoubleArray("LATS").length;
@@ -268,6 +292,16 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
             LatLng loc = new LatLng(holdLat, holdLong);
             mMap.addMarker(new MarkerOptions().position(loc).title("SPOT DESTINATION"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
+            initializeMap();
+        }
+        else if (mapType.equals("HOLDING")) {
+            holdLat = User.myLocation.latitude;
+            holdLong = User.myLocation.longitude;
+
+            LatLng loc = new LatLng(holdLat, holdLong);
+            mMap.addMarker(new MarkerOptions().position(loc).title("MY SPOT"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
             initializeMap();
@@ -345,7 +379,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     public void onLocationChanged(Location location) {
         jsonSend = new JSONObject();
 
-        if (mapType.equals("BOUGHT")) {
+        if (mapType.equals("BOUGHT") || mapType.equals("HOLDING")) {
             double newLat = location.getLatitude();
             double newLong = location.getLongitude();
 
@@ -355,6 +389,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
+
+            currentLoc = new LatLng(newLat, newLong);
 
             mSocket.emit("message", jsonSend); //EMIT NEW LOCATION AS JSON
             //realTimeMap(newLat, newLong);
@@ -371,7 +407,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
             LatLng loc = new LatLng(newLat, newLong);
             updatePolyline(loc);
-            mMap.addMarker(new MarkerOptions().position(loc).title("NEW LOCATION"));
+            mMap.addMarker(new MarkerOptions().position(loc).title("OTHER USER LOCATION"));
+            mMap.addMarker(new MarkerOptions().position(currentLoc).title("MY LOCATION"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
 

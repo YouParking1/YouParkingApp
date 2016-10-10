@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
 
         //System.out.println(User.email + " " + User.school + " " + User.fName + " " + User.lName + " " + User.points);
 
-        if (getPreferences(Context.MODE_PRIVATE).getString("Username", "").length() <= 0) {
+
             SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("Username", User.email);
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
             editor.putString("University", User.school);
             editor.putString("Password", passwordEt.getText().toString());
             editor.commit();
-        }
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 

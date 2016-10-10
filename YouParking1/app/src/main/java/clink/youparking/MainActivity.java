@@ -235,11 +235,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void processFinish(String output) throws JSONException {
-        outputFromProcess = output;
+        //outputFromProcess = output;
+        Intent intent = new  Intent(this, FoundSpotActivity.class);
+        intent.putExtra("SpotID", -1);
+        intent.putExtra("Role", "Holder");
+        startActivity(intent);
     }
 
     /**
-     * FUNCTIONS FOR FIND NOW
      *
      * LAUNCHES FoundSpotActivity
      * @param view
@@ -257,6 +260,7 @@ public class MainActivity extends AppCompatActivity
 
             Intent intent = new  Intent(this, FoundSpotActivity.class);
             intent.putExtra("SpotID", view.getId());
+            intent.putExtra("Role", "Buyer");
             startActivity(intent);
         }
         else {

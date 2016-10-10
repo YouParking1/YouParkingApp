@@ -1,9 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frag_found_spot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="clink.youparking.FoundSpotActivityFragment"
+    tools:context="clink.youparking.HoldingMapFragment"
     tools:showIn="@layout/activity_found_spot">
 
     <LinearLayout
@@ -14,7 +13,7 @@
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/bought_spot_map"
+            android:id="@+id/holding_spot_map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="300sp"
@@ -28,6 +27,11 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:text="Complete"
+                android:onClick="endTransaction"/>
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
                 android:onClick="endTransaction"/>
         </LinearLayout>
     </LinearLayout>
