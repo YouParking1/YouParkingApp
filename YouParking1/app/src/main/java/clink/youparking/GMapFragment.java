@@ -162,7 +162,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             mSocket.connect();
             mSocket.on("message", onNewMessage);
             mSocket.emit("login", User.email);
-            mSocket.emit("joinRoom", User.spots.get(spotID).getHolder_email());
+            if (spotID != -1)
+                mSocket.emit("joinRoom", User.spots.get(spotID).getHolder_email());
 
         }
         else if (mapType.equals("HOLDING")) {
@@ -287,14 +288,16 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             }
         }
         else if (mapType.equals("BOUGHT")) {
-            holdLat = User.spots.get(spotID).getLatitude();
-            holdLong = User.spots.get(spotID).getLongitude();
+            if (spotID != -1) {
+                holdLat = User.spots.get(spotID).getLatitude();
+                holdLong = User.spots.get(spotID).getLongitude();
 
-            LatLng loc = new LatLng(holdLat, holdLong);
-            mMap.addMarker(new MarkerOptions().position(loc).title("SPOT DESTINATION"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
-            initializeMap();
+                LatLng loc = new LatLng(holdLat, holdLong);
+                mMap.addMarker(new MarkerOptions().position(loc).title("SPOT DESTINATION"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
+                initializeMap();
+            }
         }
         else if (mapType.equals("HOLDING")) {
             holdLat = User.myLocation.latitude;
