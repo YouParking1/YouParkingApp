@@ -159,11 +159,13 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
             currentLoc = new LatLng(User.myLocation.latitude, User.myLocation.longitude);
 
-            mSocket.connect();
-            mSocket.on("message", onNewMessage);
-            mSocket.emit("login", User.email);
-            if (spotID != -1)
+            if (spotID != -1) {
+                mSocket.connect();
+                mSocket.on("message", onNewMessage);
+                mSocket.emit("login", User.email);
+
                 mSocket.emit("joinRoom", User.spots.get(spotID).getHolder_email());
+            }
 
         }
         else if (mapType.equals("HOLDING")) {
@@ -355,18 +357,19 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     public void onStop() {
         super.onStop();
 
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
 
         mSocket.disconnect();
         mSocket.off("new message", onNewMessage);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+
     }
 
 
