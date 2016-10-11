@@ -1,7 +1,10 @@
 package clink.youparking;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -69,6 +72,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     private String room = null; // FOR USE WITH REAL TIME NAVIGATION TRACKING
 
     private int spotID = -1;
+
+    ProgressDialog waiting;
 
     LatLng currentLoc;
 
@@ -183,10 +188,26 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
             currentLoc = new LatLng(User.myLocation.latitude, User.myLocation.longitude);
 
+
+            waiting = new ProgressDialog(getContext());
+            waiting.setTitle("Waiting For Buyer");
+            waiting.setMessage("Please wait while we find a buyer...");
+            waiting.setCanceledOnTouchOutside(false);
+            waiting.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+            waiting.show();
+
+
             mSocket.connect();
             mSocket.on("message", onNewMessage);
             mSocket.emit("login", User.email);
             mSocket.emit("joinRoom", User.email);
+
         }
         else {
             // TODO: ADD CODE FOR FINDING SCHOOLS LOCATION AND SETTING CENTRAL VIEW TO THOSE COORDINATES
@@ -366,6 +387,13 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        //TODO: FIX LATER
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
 
@@ -457,6 +485,10 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
                     if (mMap != null) {
                         realTimeMap(newLat, newLong);
+                    }
+
+                    if (waiting.isShowing()) {
+                        waiting.dismiss();
                     }
 
                 }
