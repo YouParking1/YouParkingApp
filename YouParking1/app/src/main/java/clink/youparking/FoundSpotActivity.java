@@ -11,25 +11,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import org.json.JSONException;
+
 public class FoundSpotActivity extends AppCompatActivity implements HoldingMapFragment.OnFragmentInteractionListener,
-        GMapFragment.OnFragmentInteractionListener {
+        GMapFragment.OnFragmentInteractionListener, AsyncResponse{
     int spotID = 0;
     String role = "";
+    String transactionID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            spotID = extras.getInt("SpotID");
+            role = extras.getString("Role");
+            transactionID = extras.getString("TransID");
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_found_spot);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            spotID = extras.getInt("SpotID");
-            role = extras.getString("Role");
-        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,8 +72,24 @@ public class FoundSpotActivity extends AppCompatActivity implements HoldingMapFr
     }
 
     public void endTransaction(View view) {
+        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute("BuyNowComplete", transactionID);
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
+    public void setTransactionID(String transactionID) {
+        this.transactionID = transactionID;
+    }
+
+    public String getTransactionID() {
+        return transactionID;
+    }
+
+    @Override
+    public void processFinish(String output) throws JSONException {
+
+    }
 }

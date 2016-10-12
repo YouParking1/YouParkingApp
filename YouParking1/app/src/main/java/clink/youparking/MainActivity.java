@@ -1,6 +1,7 @@
 package clink.youparking;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -32,7 +34,10 @@ public class MainActivity extends AppCompatActivity
         DynamicVehicleFragment.OnFragmentInteractionListener, AsyncResponse {
 
     String outputFromProcess = null;
-    public enum Operation { DELETE, HOLDSPOT, NONE }
+
+    int bought_spot_id = -1;
+
+    public enum Operation { DELETE, HOLDSPOT, BUY, NONE }
 
     Operation operation = Operation.NONE;
 
@@ -267,6 +272,33 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("Role", "Holder");
             startActivity(intent);
         }
+        else if(operation == Operation.BUY) {
+            if (output.contains("-1")) { // if spot was taken while the buyer was browsing
+                AlertDialog alertDialog = new AlertDialog.Builder(this)
+                        .setTitle("Sorry")
+                        .setMessage("This spot was taken. Try refreshing the find now menu.")
+                        .setPositiveButton("Refresh Spots",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                FragmentManager fragmentManager = getSupportFragmentManager();
+                                fragmentManager.beginTransaction().replace(R.id.flContent, new FindNowFragment()).commit();
+                            }
+                        })
+                        .show();
+            }
+            else {
+                if (bought_spot_id != -1) {
+                    int id = bought_spot_id;
+                    Intent intent = new Intent(this, FoundSpotActivity.class);
+                    intent.putExtra("SpotID", id);
+                    intent.putExtra("Role", "Buyer");
+                    intent.putExtra("TransID", output);
+
+                    System.out.println("&*&*&*&*&*&*&*&* " + output);
+                    startActivity(intent);
+                }
+            }
+        }
     }
 
     /**
@@ -275,35 +307,22 @@ public class MainActivity extends AppCompatActivity
      * @param view
      */
     public void buySpot(View view) {
-        if (User.spots.get(view.getId()).getPoints() <= User.points) {
-            System.out.println("Email: " + User.email + " " + "Holder: " + User.spots.get(view.getId()).getHolder_email() +
-                " " + "Spots: " + User.spots.get(view.getId()).getPoints());
+        operation = Operation.BUY;
+
+        if (User.points >= User.spots.get(view.getId()).getPoints()) {
+            bought_spot_id = view.getId();
 
             BackgroundWorker backgroundWorker = new BackgroundWorker(this);
             backgroundWorker.delegate = this;
             backgroundWorker.execute("exchange", User.spots.get(view.getId()).getHolder_email(),
                     Integer.toString(User.spots.get(view.getId()).getPoints()),
                     Integer.toString(User.spots.get(view.getId()).getTime()));
-            //TODO: UNCOMMENT ABOVE CODE
 
-            Intent intent = new  Intent(this, FoundSpotActivity.class);
-            intent.putExtra("SpotID", view.getId());
-            intent.putExtra("Role", "Buyer");
-            startActivity(intent);
         }
         else {
             Toast toast = Toast.makeText(this, "Not Enough Points", Toast.LENGTH_LONG);
             toast.show();
         }
-//        double sLat, sLong;
-//        sLat = User.spots.get(view.getId()).getLatitude();
-//        sLong = User.spots.get(view.getId()).getLongitude();
-//
-//        Intent intent = new Intent(this, FoundSpotActivity.class);
-//        intent.putExtra("LAT", sLat);
-//        intent.putExtra("LONG", sLong);
-//        startActivity(intent);
-
     }
 
 

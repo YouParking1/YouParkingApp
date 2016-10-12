@@ -71,6 +71,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     private String mapType;
     private String room = null; // FOR USE WITH REAL TIME NAVIGATION TRACKING
 
+    private String transId = "";
+
     private int spotID = -1;
 
     ProgressDialog waiting;
@@ -162,7 +164,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             Bundle extras = getActivity().getIntent().getExtras();
             spotID = extras.getInt("SpotID");
 
-            currentLoc = new LatLng(User.myLocation.latitude, User.myLocation.longitude);
+            currentLoc = new LatLng(User.spots.get(spotID).getLatitude(), User.spots.get(spotID).getLongitude());
+            transId = ((FoundSpotActivity)getActivity()).getTransactionID();
 
             if (spotID != -1) {
                 mSocket.connect();
@@ -300,14 +303,16 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.animateCamera(CameraUpdateFactory.zoomTo(3.0f));
 
         if (mapType.equals("FIND")) {
-            int size = getArguments().getDoubleArray("LATS").length;
-            double lats [] = getArguments().getDoubleArray("LATS");
-            double longs [] = getArguments().getDoubleArray("LONGS");
-            int points [] = getArguments().getIntArray("POINTS");
+            if (getArguments().getDoubleArray("LATS") != null) {
+                int size = getArguments().getDoubleArray("LATS").length;
+                double lats[] = getArguments().getDoubleArray("LATS");
+                double longs[] = getArguments().getDoubleArray("LONGS");
+                int points[] = getArguments().getIntArray("POINTS");
 
-            for (int i = 0; i < size; i++) {
-                LatLng latLng = new LatLng(lats[i], longs[i]);
-                mMap.addMarker(new MarkerOptions().position(latLng).title(Integer.toString(points[i])));
+                for (int i = 0; i < size; i++) {
+                    LatLng latLng = new LatLng(lats[i], longs[i]);
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(Integer.toString(points[i])));
+                }
             }
         }
         else if (mapType.equals("BOUGHT")) {
@@ -420,6 +425,9 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             try {
                 jsonSend.put("LAT", newLat);
                 jsonSend.put("LONG", newLong);
+                if (mapType.equals("BOUGHT")) { // IF THIS IS A BUYER, INSERT TRANSACTION ID
+                    jsonSend.put("ID", transId);
+                }
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -479,16 +487,19 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                     try {
                         newLat = data.getDouble("LAT");
                         newLong = data.getDouble("LONG");
+
+                        if (mMap != null) {
+                            realTimeMap(newLat, newLong);
+                        }
+
+                        if (waiting.isShowing()) {
+                            waiting.dismiss();
+                            String transId = data.getString("ID");
+                            ((FoundSpotActivity)getActivity()).setTransactionID(transId);
+                        }
+
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
-                    }
-
-                    if (mMap != null) {
-                        realTimeMap(newLat, newLong);
-                    }
-
-                    if (waiting.isShowing()) {
-                        waiting.dismiss();
                     }
 
                 }
