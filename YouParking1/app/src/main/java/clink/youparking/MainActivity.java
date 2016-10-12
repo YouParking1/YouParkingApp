@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity
         MyBidsFragment.OnFragmentInteractionListener, FindNowFragment.OnFragmentInteractionListener,
         HoldSpotFragment.OnFragmentInteractionListener, FindLaterFragment.OnFragmentInteractionListener, HoldLaterFragment.OnFragmentInteractionListener,
         SignOutFragment.OnFragmentInteractionListener, GMapFragment.OnFragmentInteractionListener, HoldSpotMapFragment.OnFragmentInteractionListener,
-        MapInteraction, HoldLaterMapFragment.OnFragmentInteractionListener, DynamicSpot.OnFragmentInteractionListener, Achievements.OnFragmentInteractionListener,
+        MapInteraction, HoldLaterMapFragment.OnFragmentInteractionListener, DynamicSpot.OnFragmentInteractionListener, AchievementFragment.OnFragmentInteractionListener,
         DynamicVehicleFragment.OnFragmentInteractionListener, AsyncResponse {
 
     String outputFromProcess = null;
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity
     public void goToAchievements(View view)
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, new Achievements()).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new AchievementFragment()).commit();
     }
 
     /**

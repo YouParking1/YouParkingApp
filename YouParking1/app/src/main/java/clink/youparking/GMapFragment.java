@@ -390,7 +390,11 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onStop() {
         super.onStop();
-
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+        mSocket.disconnect();
+        mSocket.off("new message", onNewMessage);
 
     }
 
@@ -412,11 +416,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     public void onDestroy() {
         super.onDestroy();
 
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
-        mSocket.disconnect();
-        mSocket.off("new message", onNewMessage);
+
     }
 
 

@@ -174,7 +174,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
         if(Integer.valueOf(achievement3Progress.getText().toString()) >= 10) {
             unknownAchievement3.setVisibility(View.GONE);
             knownAchievement3.setVisibility(View.VISIBLE);
-            achievement1Progress.setText("10");
+            achievement3Progress.setText("10");
         }
     }
 

@@ -72,10 +72,15 @@ public class AchievementFragment extends Fragment implements AsyncResponse {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_achievements, container, false);
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        System.out.println("IS THIS WORKING????????????");
 
         BackgroundWorker backgroundWorker = new BackgroundWorker(getActivity());
         backgroundWorker.delegate = this;
@@ -129,7 +134,6 @@ public class AchievementFragment extends Fragment implements AsyncResponse {
         System.out.println("SPOTS HELD: " + spotsHeld);
         System.out.println("SPOTS FOUND: " + spotsFound);
 
-
         achievement1Progress.setText(Integer.toString(spotsHeld));
         achievement2Progress.setText(Integer.toString(spotsFound));
         achievement3Progress.setText(Integer.toString(spotsHeld));
@@ -149,7 +153,7 @@ public class AchievementFragment extends Fragment implements AsyncResponse {
         if(Integer.valueOf(achievement3Progress.getText().toString()) >= 10) {
             unknownAchievement3.setVisibility(View.GONE);
             knownAchievement3.setVisibility(View.VISIBLE);
-            achievement1Progress.setText("10");
+            achievement3Progress.setText("10");
         }
     }
 

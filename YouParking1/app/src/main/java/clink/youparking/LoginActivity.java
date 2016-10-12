@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         }
         else if(User.numCars < 1)
         {
-            Toast.makeText(this, "Must register your vehicle. ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Must register your vehicle. ", Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(this, VehicleRegistrationActivity.class);
             startActivity(intent);

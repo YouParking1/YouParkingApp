@@ -78,7 +78,7 @@ public class FoundSpotActivity extends AppCompatActivity implements HoldingMapFr
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     public void setTransactionID(String transactionID) {
