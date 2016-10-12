@@ -218,6 +218,7 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
         System.out.println("Vehicle Registration Output: " + output);
 
         Intent intent = new Intent(this, UploadVehicleActivity.class);
+        intent.putExtra("id", output);
         startActivity(intent);
     }
 }
