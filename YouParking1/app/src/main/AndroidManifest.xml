@@ -74,7 +74,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_found_spot"
             android:screenOrientation="portrait"
-            android:theme="@style/AppBaseTheme" />
+            android:theme="@style/AppBaseTheme"
+            android:noHistory="true"/>
         <activity android:name=".AaronTestActivity" />
         <activity android:name=".VerifyEmail" />
         <activity android:name=".UploadVehicleActivity" />

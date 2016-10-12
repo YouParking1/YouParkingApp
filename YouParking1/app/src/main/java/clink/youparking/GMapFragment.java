@@ -176,7 +176,6 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                 mSocket.connect();
                 mSocket.on("message", onNewMessage);
                 mSocket.emit("login", User.email);
-
                 mSocket.emit("joinRoom", User.spots.get(spotID).getHolder_email());
             }
 
@@ -388,12 +387,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     public void onStop() {
         super.onStop();
 
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
 
-        mSocket.disconnect();
-        mSocket.off("new message", onNewMessage);
     }
 
     @Override
@@ -404,10 +398,21 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
 
-
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+        mSocket.disconnect();
+        mSocket.off("new message", onNewMessage);
     }
 
 
@@ -493,11 +498,9 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                         newLat = data.getDouble("LAT");
                         newLong = data.getDouble("LONG");
 
-                        if (mMap != null) {
-                            realTimeMap(newLat, newLong);
-                        }
 
-                        if (waiting.isShowing()) {
+
+                        if (mapType.equals("HOLDING") && waiting.isShowing()) {
                             waiting.dismiss();
                             String transId = data.getString("ID");
                             ((FoundSpotActivity)getActivity()).setTransactionID(transId);
@@ -505,6 +508,10 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
+                    }
+
+                    if (mMap != null) {
+                        realTimeMap(newLat, newLong);
                     }
 
                 }
