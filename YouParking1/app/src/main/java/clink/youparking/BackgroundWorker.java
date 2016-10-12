@@ -432,6 +432,7 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
                 String email = User.email;
                 String holder_email = params[1];
                 String points_exchanged = params[2];
+                String time = params[3];
                 URL url = new URL(login_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -441,7 +442,8 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data = URLEncoder.encode("email", "UTF-8")+"="+URLEncoder.encode(email, "UTF-8")+"&"
                         +URLEncoder.encode("holder_email", "UTF-8")+"="+URLEncoder.encode(holder_email, "UTF-8")+"&"
-                        +URLEncoder.encode("points_exchanged", "UTF-8")+"="+URLEncoder.encode(points_exchanged, "UTF-8");
+                        +URLEncoder.encode("points_exchanged", "UTF-8")+"="+URLEncoder.encode(points_exchanged, "UTF-8")
+                        +"&"+URLEncoder.encode("time", "UTF-8")+"="+URLEncoder.encode(time, "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();

@@ -12,11 +12,13 @@ public class Spot {
     private int holder_car;
     private int holder_percentage;
     private int holder_spots_held;
+    private int time;
 
     private String holder_email;
     private String comments;
 
-    public Spot(double slat, double slong, int point, int hc, String email, String comment, int percent, int spots) {
+    public Spot(double slat, double slong, int point, int hc, String email, String comment, int percent, int spots,
+                int time) {
 
         this.latitude = slat;
         this.longitude = slong;
@@ -26,6 +28,7 @@ public class Spot {
         this.comments = comment;
         this.holder_percentage = percent;
         this.holder_spots_held = spots;
+        this.time = time;
 
     }
 
@@ -59,5 +62,9 @@ public class Spot {
 
     public int getHolder_spots_held() {
         return holder_spots_held;
+    }
+
+    public int getTime() {
+        return time;
     }
 }

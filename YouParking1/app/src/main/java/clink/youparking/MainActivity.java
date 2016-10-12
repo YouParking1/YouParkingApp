@@ -252,10 +252,11 @@ public class MainActivity extends AppCompatActivity
             System.out.println("Email: " + User.email + " " + "Holder: " + User.spots.get(view.getId()).getHolder_email() +
                 " " + "Spots: " + User.spots.get(view.getId()).getPoints());
 
-//            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
-//            backgroundWorker.delegate = this;
-//            backgroundWorker.execute("exchange", User.spots.get(view.getId()).getHolder_email(),
-//                    Integer.toString(User.spots.get(view.getId()).getPoints()));
+            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+            backgroundWorker.delegate = this;
+            backgroundWorker.execute("exchange", User.spots.get(view.getId()).getHolder_email(),
+                    Integer.toString(User.spots.get(view.getId()).getPoints()),
+                    Integer.toString(User.spots.get(view.getId()).getTime()));
             //TODO: UNCOMMENT ABOVE CODE
 
             Intent intent = new  Intent(this, FoundSpotActivity.class);

@@ -160,7 +160,7 @@ public class FindNowFragment extends Fragment implements AsyncResponse {
                 User.spots.add(new Spot(jsonObject.getDouble("Latitude"), jsonObject.getDouble("Longitude"),
                         jsonObject.getInt("Points"), jsonObject.getInt("CurrentCar"), jsonObject.getString("Email"),
                         jsonObject.getString("Comments"), jsonObject.getInt("Holder_Percent"),
-                        jsonObject.getInt("Holder_Spots")));
+                        jsonObject.getInt("Holder_Spots"), jsonObject.getInt("Time")));
 
                 lats[i] = jsonObject.getDouble("Latitude");
                 longs[i] = jsonObject.getDouble("Longitude");
@@ -197,11 +197,6 @@ public class FindNowFragment extends Fragment implements AsyncResponse {
                 innerBundle.putInt("PERCENT", User.spots.get(i).getHolder_percentage());
                 innerBundle.putInt("SPOTS", User.spots.get(i).getHolder_spots_held());
                 innerBundle.putInt("ID", i);
-
-                System.out.println(User.spots.get(i).getLatitude() + " " + User.spots.get(i).getLatitude() +
-                " " + User.spots.get(i).getHolder_email() + " " + User.spots.get(i).getComments() + " " +
-                User.spots.get(i).getPoints() + " " + User.spots.get(i).getHolder_car() + " " +
-                User.spots.size());
 
 
                 Fragment fragment = new DynamicSpot();
