@@ -36,8 +36,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     TextView findNowSpotsAvailable, findLaterSpotsAvailable, welcomeMessage, statSpotsHeld,
             statPercentage, statsSpotsFound, achievement1Progress, achievement2Progress,
             achievement3Progress, achievement1Goal, achievement2Goal, achievement3Goal;
-    ImageButton achievement1Button, achievement2Button, achievement3Button, unknownAchievement1,
-            unknownAchievement2, unknownAchievement3, knownAchievement1,
+    ImageButton unknownAchievement1, unknownAchievement2, unknownAchievement3, knownAchievement1,
             knownAchievement2, knownAchievement3;
 
     private OnFragmentInteractionListener mListener;
@@ -171,14 +170,11 @@ public class HomeFragment extends Fragment implements AsyncResponse {
             unknownAchievement2.setVisibility(View.GONE);
             knownAchievement2.setVisibility(View.VISIBLE);
             achievement2Progress.setText("5");
-
         }
-        if(Integer.valueOf(achievement3Progress.getText().toString()) >= 10)
-        {
+        if(Integer.valueOf(achievement3Progress.getText().toString()) >= 10) {
             unknownAchievement3.setVisibility(View.GONE);
             knownAchievement3.setVisibility(View.VISIBLE);
             achievement1Progress.setText("10");
-
         }
     }
 

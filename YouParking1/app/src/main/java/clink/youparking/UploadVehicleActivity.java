@@ -23,7 +23,6 @@ public class UploadVehicleActivity extends AppCompatActivity implements AsyncRes
     public static final String UPLOAD_URL = "http://www.troyparking.com/uploads.php";
     public static final String UPLOAD_KEY = "image";
 
-
     private int REQUEST_LOAD_IMAGE = 1;
 
     private ImageView imageToUpload;
@@ -79,8 +78,10 @@ public class UploadVehicleActivity extends AppCompatActivity implements AsyncRes
     private void uploadImage(){
         class UploadImage extends AsyncTask<Bitmap,Void,String> {
 
+            String id = getIntent().getStringExtra("id");
+
             ProgressDialog loading;
-            RequestHandler rh = new RequestHandler();
+            RequestHandler rh = new RequestHandler(id);
 
             @Override
             protected void onPreExecute() {
@@ -110,6 +111,10 @@ public class UploadVehicleActivity extends AppCompatActivity implements AsyncRes
 
             @Override
             protected String doInBackground(Bitmap... params) {
+
+                System.out.println("&&&&&&&&&&&&&&&&&&&");
+                System.out.println("ID IN DO IN BACKGROUND: " + id);
+
                 Bitmap bitmap = params[0];
                 String uploadImage = getStringImage(bitmap);
 

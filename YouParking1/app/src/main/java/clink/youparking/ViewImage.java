@@ -36,7 +36,7 @@ public class ViewImage extends AppCompatActivity implements View.OnClickListener
         buttonGetImage = (Button) findViewById(R.id.buttonGetImage);
         imageView = (ImageView) findViewById(R.id.imageViewShow);
 
-        requestHandler = new RequestHandler();
+        requestHandler = new RequestHandler("-1");
 
         buttonGetImage.setOnClickListener(this);
     }

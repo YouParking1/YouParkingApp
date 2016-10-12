@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class DynamicVehicleFragment extends Fragment {
 
     TextView vehicleMakeText, vehicleModelText, vehicleYearText, vehicleColorText;
     ImageView vehicleImage;
+    Button vehicleBtn;
     private RequestHandler requestHandler;
 
     // TODO: Rename and change types of parameters
@@ -106,11 +108,18 @@ public class DynamicVehicleFragment extends Fragment {
         vehicleColorText.setText(color);
 
         vehicleImage = (ImageView)getView().findViewById(R.id.vehicleImage);
-        getImage(getArguments().getInt("VEHICLEID"));
+        int vehicleid = getArguments().getInt("VEHICLEID");
+        getImage(vehicleid);
+//        System.out.println("Vehicle ID: " + getArguments().getInt("VEHICLEID"));
+
+        vehicleBtn = (Button)getView().findViewById(R.id.deleteVehicleBtn);
+        vehicleBtn.setId(vehicleid);
 
         LinearLayout linearLayout = (LinearLayout) getView().findViewById(R.id.vehiclesLayout);
         int id = getArguments().getInt("ID");
         linearLayout.setId(id);
+
+        getView().setId(vehicleid);
     }
 
     private void getImage(int id) {
@@ -134,6 +143,9 @@ public class DynamicVehicleFragment extends Fragment {
             protected Bitmap doInBackground(String... params) {
                 String id = params[0];
                 String add = "http://www.troyparking.com/getImage.php?id="+id;
+
+                System.out.println("Link with id:" + add);
+
                 URL url = null;
                 Bitmap image = null;
                 try {

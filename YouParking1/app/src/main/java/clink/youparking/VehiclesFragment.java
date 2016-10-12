@@ -122,20 +122,21 @@ public class VehiclesFragment extends Fragment implements AsyncResponse {
         mListener = null;
     }
 
+
 //    private void getImage(int id) {
 //        class GetImage extends AsyncTask<String,Void,Bitmap> {
-////            ProgressDialog loading;
+//            ProgressDialog loading;
 //
 //            @Override
 //            protected void onPreExecute() {
 //                super.onPreExecute();
-////                loading = ProgressDialog.show(getActivity(), "Uploading...", null,true,true);
+//                loading = ProgressDialog.show(getActivity(), "Uploading...", null,true,true);
 //            }
 //
 //            @Override
 //            protected void onPostExecute(Bitmap b) {
 //                super.onPostExecute(b);
-////                loading.dismiss();
+//                loading.dismiss();
 //                vehicleImage.setImageBitmap(b);
 //            }
 //
@@ -143,6 +144,9 @@ public class VehiclesFragment extends Fragment implements AsyncResponse {
 //            protected Bitmap doInBackground(String... params) {
 //                String id = params[0];
 //                String add = "http://www.troyparking.com/getImage.php?id="+id;
+//
+//                System.out.println("Link with id:" + add);
+//
 //                URL url = null;
 //                Bitmap image = null;
 //                try {
@@ -160,6 +164,8 @@ public class VehiclesFragment extends Fragment implements AsyncResponse {
 //        GetImage gi = new GetImage();
 //        gi.execute(Integer.toString(id));
 //    }
+
+
 
     @Override
     public void processFinish(String output) throws JSONException {
@@ -181,6 +187,8 @@ public class VehiclesFragment extends Fragment implements AsyncResponse {
         if (User.vehicles.size() > 0) {
             for (int i = 0; i < User.vehicles.size(); i++) {
 
+                User.id = User.vehicles.get(i).getId();
+
                 Bundle bundle = new Bundle();
                 bundle.putInt("VEHICLEID", User.vehicles.get(i).getId());
                 bundle.putString("MAKE", User.vehicles.get(i).getMake());
@@ -188,6 +196,8 @@ public class VehiclesFragment extends Fragment implements AsyncResponse {
                 bundle.putInt("YEAR", User.vehicles.get(i).getYear());
                 bundle.putString("COLOR", User.vehicles.get(i).getColor());
                 bundle.putInt("ID", i);
+
+//                getImage(User.vehicles.get(i).getId());
 
                 System.out.println("VehicleID: " + User.vehicles.get(i).getId());
                 System.out.println("Make: " + User.vehicles.get(i).getMake());

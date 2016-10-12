@@ -1,18 +1,9 @@
 package clink.youparking;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Bundle;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,7 +11,15 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class VehicleRegistrationActivity extends AppCompatActivity implements AsyncResponse {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+
+public class AddNewVehicle extends AppCompatActivity implements AsyncResponse {
 
     Spinner smake, smodel, syear, scolor;
     Button scar;
@@ -38,14 +37,14 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vehicle_registration);
+        setContentView(R.layout.activity_add_new_vehicle);
         smake = (Spinner)findViewById(R.id.sMake);
         smodel = (Spinner)findViewById(R.id.sModel);
         syear = (Spinner) findViewById(R.id.sYear);
 
         //ArrayList<HashMap<String, String>> formList = new ArrayList<HashMap<String, String>>();
         try {
-            JSONObject jsonobject = new JSONObject(AssetJSONFile("json/vehicles.json", VehicleRegistrationActivity.this));
+            JSONObject jsonobject = new JSONObject(AssetJSONFile("json/vehicles.json", AddNewVehicle.this));
             //JSONObject jsonobject = new JSONObject(jsonLocation);
             JSONArray jarray = (JSONArray) jsonobject.getJSONArray("makes");
             ArrayList<String> strArr = new ArrayList<>();
@@ -98,7 +97,7 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
     public void picksMake(String str)
     {
         try {
-            JSONObject jsonobject = new JSONObject(AssetJSONFile("json/vehicles.json", VehicleRegistrationActivity.this));
+            JSONObject jsonobject = new JSONObject(AssetJSONFile("json/vehicles.json", AddNewVehicle.this));
             //JSONObject jsonobject = new JSONObject(jsonLocation);
             JSONArray jarray = (JSONArray) jsonobject.getJSONArray("makes");
             int index = 0;
@@ -135,7 +134,7 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
     public void picksModel(String str)
     {
         try {
-            JSONObject jsonobject = new JSONObject(AssetJSONFile("json/vehicles.json", VehicleRegistrationActivity.this));
+            JSONObject jsonobject = new JSONObject(AssetJSONFile("json/vehicles.json", AddNewVehicle.this));
             //JSONObject jsonobject = new JSONObject(jsonLocation);
             JSONArray jarray = (JSONArray) jsonobject.getJSONArray("makes");
             int index = 0;
@@ -214,11 +213,8 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
 
     @Override
     public void processFinish(String output) {
-
-        System.out.println("Vehicle Registration Output: " + output);
-
         Intent intent = new Intent(this, UploadVehicleActivity.class);
+        intent.putExtra("id", output);
         startActivity(intent);
     }
 }
-

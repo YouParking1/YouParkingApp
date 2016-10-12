@@ -28,5 +28,6 @@ public class User {
 
     public static ArrayList<Spot> spots = new ArrayList<>();
     public static ArrayList<Vehicles> vehicles = new ArrayList<>();
+    public static int id = 0;
 
 }

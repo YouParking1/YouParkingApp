@@ -143,5 +143,14 @@
         android:layout_marginStart="100dp"
         android:id="@+id/vehicleImage"/>
 
+    <Button
+        android:id="@+id/deleteVehicleBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center"
+        android:text="Delete Vehicle"
+        android:onClick="deleteVehicle"/>
+
 </LinearLayout>
 

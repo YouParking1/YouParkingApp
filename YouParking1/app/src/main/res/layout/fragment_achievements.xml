@@ -24,7 +24,6 @@
         <include layout="@layout/achievement1" />
         <include layout="@layout/achievement2" />
         <include layout="@layout/achievement3" />
-        <!--<include layout="@layout/achievement4" />-->
     </LinearLayout>
 
 </LinearLayout>

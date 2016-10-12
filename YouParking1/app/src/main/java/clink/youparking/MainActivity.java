@@ -31,8 +31,10 @@ public class MainActivity extends AppCompatActivity
         MapInteraction, HoldLaterMapFragment.OnFragmentInteractionListener, DynamicSpot.OnFragmentInteractionListener, Achievements.OnFragmentInteractionListener,
         DynamicVehicleFragment.OnFragmentInteractionListener, AsyncResponse {
 
-    TextView numTickets;
     String outputFromProcess = null;
+    public enum Operation { DELETE, HOLDSPOT, NONE }
+
+    Operation operation = Operation.NONE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +43,8 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
-
         setSupportActionBar(toolbar);
+
 
         if (savedInstanceState == null) {
             Fragment fragment = null;
@@ -73,7 +75,8 @@ public class MainActivity extends AppCompatActivity
         TextView text = (TextView) hView.findViewById(R.id.inMenu);
         text.setTypeface(font);
 
-        numTickets = (TextView)findViewById(R.id.numTickets);
+        TextView numTickets = (TextView)hView.findViewById(R.id.numTickets);
+        numTickets.setText(Integer.toString(User.points));
     }
 
     @Override
@@ -179,6 +182,17 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.flContent, new HoldLaterFragment()).commit();
     }
 
+    public void deleteVehicle(View view)
+    {
+        operation = Operation.DELETE;
+        String type = "deleteVehicle";
+        int id = view.getId();
+
+        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute(type, Integer.toString(id));
+    }
+
     public void recheckSpotLater(View view)
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -196,6 +210,9 @@ public class MainActivity extends AppCompatActivity
      * @param view
      */
     public void onHold(View view) {
+
+        operation = Operation.HOLDSPOT;
+
         Spinner spinner = (Spinner) findViewById(R.id.holdPointsSpinner);
         String choice = spinner.getSelectedItem().toString();
 
@@ -227,19 +244,29 @@ public class MainActivity extends AppCompatActivity
         newFragment.show(getFragmentManager(), "TimePicker");
     }
 
-//    public void goToDownload(View view)
-//    {
-//        Intent intent = new Intent(this, ViewImage.class);
-//        startActivity(intent);
-//    }
+    public void goToVehicleRegister(View view)
+    {
+        Intent intent = new Intent(this, AddNewVehicle.class);
+        startActivity(intent);
+    }
 
     @Override
     public void processFinish(String output) throws JSONException {
         //outputFromProcess = output;
-        Intent intent = new  Intent(this, FoundSpotActivity.class);
-        intent.putExtra("SpotID", -1);
-        intent.putExtra("Role", "Holder");
-        startActivity(intent);
+        if(operation == Operation.DELETE)
+        {
+            Toast.makeText(this, "Deleted Vehicle!", Toast.LENGTH_SHORT).show();
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent, new VehiclesFragment()).commit();
+        }
+        else if(operation == Operation.HOLDSPOT)
+        {
+            Intent intent = new  Intent(this, FoundSpotActivity.class);
+            intent.putExtra("SpotID", -1);
+            intent.putExtra("Role", "Holder");
+            startActivity(intent);
+        }
     }
 
     /**

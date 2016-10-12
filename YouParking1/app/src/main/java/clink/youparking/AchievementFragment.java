@@ -8,8 +8,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,11 +23,16 @@ import android.widget.TextView;
  * Use the {@link AchievementFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AchievementFragment extends Fragment {
+public class AchievementFragment extends Fragment implements AsyncResponse {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    TextView achievement1Progress, achievement2Progress, achievement3Progress, achievement1Goal,
+            achievement2Goal, achievement3Goal;
+    ImageButton unknownAchievement1, unknownAchievement2, unknownAchievement3, knownAchievement1,
+            knownAchievement2, knownAchievement3;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -62,6 +71,17 @@ public class AchievementFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        System.out.println("IS THIS WORKING????????????");
+
+        BackgroundWorker backgroundWorker = new BackgroundWorker(getActivity());
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute("home", User.school);
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -84,6 +104,53 @@ public class AchievementFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void processFinish(String output) throws JSONException {
+
+        achievement1Progress = (TextView)getView().findViewById(R.id.achievement1_progress);
+        achievement2Progress = (TextView)getView().findViewById(R.id.achievement2_progress);
+        achievement3Progress = (TextView)getView().findViewById(R.id.achievement3_progress);
+        achievement1Goal = (TextView)getView().findViewById(R.id.achievement1_goal);
+        achievement2Goal = (TextView)getView().findViewById(R.id.achievement2_goal);
+        achievement3Goal = (TextView)getView().findViewById(R.id.achievement3_goal);
+        unknownAchievement1 = (ImageButton)getView().findViewById(R.id.unknownAchievement1);
+        unknownAchievement2 = (ImageButton)getView().findViewById(R.id.unknownAchievement2);
+        unknownAchievement3 = (ImageButton)getView().findViewById(R.id.unknownAchievement3);
+        knownAchievement1 = (ImageButton)getView().findViewById(R.id.knownAchievement1);
+        knownAchievement2 = (ImageButton)getView().findViewById(R.id.knownAchievement2);
+        knownAchievement3 = (ImageButton)getView().findViewById(R.id.knownAchievement3);
+
+        JSONObject jsonObject = new JSONObject(output);
+        int spotsHeld = jsonObject.getInt("SpotsHeld");
+        int spotsFound = jsonObject.getInt("SpotsFound");
+
+        System.out.println("SPOTS HELD: " + spotsHeld);
+        System.out.println("SPOTS FOUND: " + spotsFound);
+
+
+        achievement1Progress.setText(Integer.toString(spotsHeld));
+        achievement2Progress.setText(Integer.toString(spotsFound));
+        achievement3Progress.setText(Integer.toString(spotsHeld));
+
+        if(Integer.valueOf(achievement1Progress.getText().toString()) >= 5)
+        {
+            unknownAchievement1.setVisibility(View.GONE);
+            knownAchievement1.setVisibility(View.VISIBLE);
+            achievement1Progress.setText("5");
+        }
+        if(Integer.valueOf(achievement2Progress.getText().toString()) >= 5)
+        {
+            unknownAchievement2.setVisibility(View.GONE);
+            knownAchievement2.setVisibility(View.VISIBLE);
+            achievement2Progress.setText("5");
+        }
+        if(Integer.valueOf(achievement3Progress.getText().toString()) >= 10) {
+            unknownAchievement3.setVisibility(View.GONE);
+            knownAchievement3.setVisibility(View.VISIBLE);
+            achievement1Progress.setText("10");
+        }
     }
 
     /**
