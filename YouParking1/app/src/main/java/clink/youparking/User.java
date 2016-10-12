@@ -30,4 +30,6 @@ public class User {
     public static ArrayList<Vehicles> vehicles = new ArrayList<>();
     public static int id = 0;
 
+    public static boolean holdingSpot = false;
+
 }

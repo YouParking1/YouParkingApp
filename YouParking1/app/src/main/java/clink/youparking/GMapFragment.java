@@ -164,7 +164,12 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             Bundle extras = getActivity().getIntent().getExtras();
             spotID = extras.getInt("SpotID");
 
-            currentLoc = new LatLng(User.spots.get(spotID).getLatitude(), User.spots.get(spotID).getLongitude());
+            if (User.holdingSpot == false)
+                currentLoc = new LatLng(User.spots.get(spotID).getLatitude(), User.spots.get(spotID).getLongitude());
+            else
+                currentLoc = new LatLng(User.myLocation.latitude, User.myLocation.longitude);
+            User.holdingSpot = false;
+
             transId = ((FoundSpotActivity)getActivity()).getTransactionID();
 
             if (spotID != -1) {

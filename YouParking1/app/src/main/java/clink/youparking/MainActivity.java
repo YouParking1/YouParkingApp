@@ -267,6 +267,7 @@ public class MainActivity extends AppCompatActivity
         }
         else if(operation == Operation.HOLDSPOT)
         {
+            User.holdingSpot = true;
             Intent intent = new  Intent(this, FoundSpotActivity.class);
             intent.putExtra("SpotID", -1);
             intent.putExtra("Role", "Holder");
