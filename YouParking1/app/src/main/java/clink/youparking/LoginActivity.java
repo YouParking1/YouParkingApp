@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,31 +68,47 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     public void processFinish(String output) throws JSONException {
 
+        System.out.println("OUTPUT FROM PROCESS LOGIN: " + output);
+
         JSONObject jsonObject = new JSONObject(output);
         String strLoginID = jsonObject.optString("Email");
         String strSchool = jsonObject.optString("University");
         String strFName = jsonObject.optString("FName");
         String strLName = jsonObject.optString("LName");
         User.points = jsonObject.optInt("Points");
+        User.numCars = jsonObject.optInt("Num_of_Cars");
         User.email = strLoginID;
         User.school = strSchool;
         User.fName = strFName;
         User.lName = strLName;
+        String active = jsonObject.optString("Active");
 
-        //System.out.println(User.email + " " + User.school + " " + User.fName + " " + User.lName + " " + User.points);
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("Username", User.email);
+        editor.putString("first_name", User.fName);
+        editor.putString("last_name", User.lName);
+        editor.putString("University", User.school);
+        editor.putString("Password", passwordEt.getText().toString());
+        editor.commit();
 
+        if (active.equals("false")) {
+            Toast.makeText(this, "Must verify your email. ", Toast.LENGTH_LONG).show();
 
-            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("Username", User.email);
-            editor.putString("first_name", User.fName);
-            editor.putString("last_name", User.lName);
-            editor.putString("University", User.school);
-            editor.putString("Password", passwordEt.getText().toString());
-            editor.commit();
+            Intent intent = new Intent(this, VerifyEmail.class);
+            startActivity(intent);
+        }
+        else if(User.numCars < 1)
+        {
+            Toast.makeText(this, "Must register your vehicle. ", Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-
+            Intent intent = new Intent(this, VehicleRegistrationActivity.class);
+            startActivity(intent);
+        }
+        else
+        {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 }

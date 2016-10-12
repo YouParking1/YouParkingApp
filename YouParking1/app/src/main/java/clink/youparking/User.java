@@ -13,6 +13,8 @@ public class User {
     public static String school = null; // Retrieve the logged user's school
     public static String fName = null;
     public static String lName = null;
+    public static int numCars = 0;
+
 
     public static int percentage = 0;
     public static int spotsHeld = 0;

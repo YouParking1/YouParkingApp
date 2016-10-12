@@ -215,8 +215,6 @@ public class VehicleRegistrationActivity extends AppCompatActivity implements As
     @Override
     public void processFinish(String output) {
 
-        System.out.println("Vehicle Registration Output: " + output);
-
         Intent intent = new Intent(this, UploadVehicleActivity.class);
         intent.putExtra("id", output);
         startActivity(intent);

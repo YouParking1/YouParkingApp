@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity
 
     int bought_spot_id = -1;
 
-    public enum Operation { DELETE, HOLDSPOT, BUY, NONE }
+    public enum Operation { DELETE, HOLDSPOT, BUY, NUMVEHICLES, NONE }
 
     Operation operation = Operation.NONE;
 
@@ -251,19 +251,33 @@ public class MainActivity extends AppCompatActivity
 
     public void goToVehicleRegister(View view)
     {
-        Intent intent = new Intent(this, AddNewVehicle.class);
-        startActivity(intent);
+        operation = Operation.NUMVEHICLES;
+
+        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute("numVehicles");
     }
 
     @Override
     public void processFinish(String output) throws JSONException {
         //outputFromProcess = output;
+
+        System.out.println("OUTPUT FOR PROCESS: " + output);
+
+
         if(operation == Operation.DELETE)
         {
-            Toast.makeText(this, "Deleted Vehicle!", Toast.LENGTH_SHORT).show();
+            if(output.contains("No"))
+            {
+                Toast.makeText(this, "You must have at least one vehicle.", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                Toast.makeText(this, "Deleted Vehicle!", Toast.LENGTH_SHORT).show();
 
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.flContent, new VehiclesFragment()).commit();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContent, new VehiclesFragment()).commit();
+            }
         }
         else if(operation == Operation.HOLDSPOT)
         {
@@ -298,6 +312,19 @@ public class MainActivity extends AppCompatActivity
                     System.out.println("&*&*&*&*&*&*&*&* " + output);
                     startActivity(intent);
                 }
+            }
+        }
+
+        else if(operation == Operation.NUMVEHICLES)
+        {
+            if(Integer.parseInt(output) < 3)
+            {
+                Intent intent = new Intent(this, AddNewVehicle.class);
+                startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), "You have too many vehicles. Please delete one vehicle first.", Toast.LENGTH_LONG).show();
             }
         }
     }

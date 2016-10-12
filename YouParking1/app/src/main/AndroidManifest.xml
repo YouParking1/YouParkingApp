@@ -79,7 +79,6 @@
         <activity android:name=".AaronTestActivity" />
         <activity android:name=".VerifyEmail" />
         <activity android:name=".UploadVehicleActivity" />
-        <activity android:name=".ViewImage" />
         <activity android:name=".AddNewVehicle" />
     </application>
 

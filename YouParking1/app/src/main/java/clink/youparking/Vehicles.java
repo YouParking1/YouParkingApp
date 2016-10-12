@@ -1,7 +1,5 @@
 package clink.youparking;
 
-import android.graphics.Bitmap;
-
 /**
  * Created by Clink on 10/6/2016.
  */
@@ -13,7 +11,6 @@ public class Vehicles {
     private String model;
     private int year;
     private String color;
-//    private byte[] vehicleImage;
 
     public Vehicles(int vId, String vMake, String vModel, int vYear, String vColor) {
 
@@ -22,7 +19,6 @@ public class Vehicles {
         this.model = vModel;
         this.year = vYear;
         this.color = vColor;
-//        this.vehicleImage = vVehicleImage;
     }
 
     public int getId() { return id; }
@@ -31,9 +27,7 @@ public class Vehicles {
         return make;
     }
 
-    public String getModel() {
-        return model;
-    }
+    public String getModel() { return model; }
 
     public int getYear() {
         return year;
@@ -42,6 +36,4 @@ public class Vehicles {
     public String getColor() {
         return color;
     }
-
-//    public byte[] getVehicleImage() { return vehicleImage; }
 }

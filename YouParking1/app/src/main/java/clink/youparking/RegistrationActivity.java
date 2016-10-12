@@ -72,6 +72,9 @@ public class RegistrationActivity extends AppCompatActivity implements AsyncResp
 
     @Override
     public void processFinish(String output) {
+
+        System.out.println("OUTPUT PROCESS FOR REGISTRATION: " + output);
+
         if (output.contains("success")) {
             TextView email = (TextView)findViewById(R.id.reg_email);
             TextView fname = (TextView)findViewById(R.id.reg_first_name);

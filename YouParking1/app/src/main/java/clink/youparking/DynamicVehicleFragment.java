@@ -110,7 +110,6 @@ public class DynamicVehicleFragment extends Fragment {
         vehicleImage = (ImageView)getView().findViewById(R.id.vehicleImage);
         int vehicleid = getArguments().getInt("VEHICLEID");
         getImage(vehicleid);
-//        System.out.println("Vehicle ID: " + getArguments().getInt("VEHICLEID"));
 
         vehicleBtn = (Button)getView().findViewById(R.id.deleteVehicleBtn);
         vehicleBtn.setId(vehicleid);

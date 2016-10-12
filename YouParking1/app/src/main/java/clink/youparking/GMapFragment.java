@@ -215,6 +215,10 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             mSocket.emit("login", User.email);
             mSocket.emit("joinRoom", User.email);
 
+            if(mSocket.connected())
+            {
+                System.out.println("&*&*&*&* " + User.email);
+            }
         }
         else {
             // TODO: ADD CODE FOR FINDING SCHOOLS LOCATION AND SETTING CENTRAL VIEW TO THOSE COORDINATES

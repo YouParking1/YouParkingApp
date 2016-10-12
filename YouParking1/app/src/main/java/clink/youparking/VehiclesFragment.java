@@ -122,51 +122,6 @@ public class VehiclesFragment extends Fragment implements AsyncResponse {
         mListener = null;
     }
 
-
-//    private void getImage(int id) {
-//        class GetImage extends AsyncTask<String,Void,Bitmap> {
-//            ProgressDialog loading;
-//
-//            @Override
-//            protected void onPreExecute() {
-//                super.onPreExecute();
-//                loading = ProgressDialog.show(getActivity(), "Uploading...", null,true,true);
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Bitmap b) {
-//                super.onPostExecute(b);
-//                loading.dismiss();
-//                vehicleImage.setImageBitmap(b);
-//            }
-//
-//            @Override
-//            protected Bitmap doInBackground(String... params) {
-//                String id = params[0];
-//                String add = "http://www.troyparking.com/getImage.php?id="+id;
-//
-//                System.out.println("Link with id:" + add);
-//
-//                URL url = null;
-//                Bitmap image = null;
-//                try {
-//                    url = new URL(add);
-//                    image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//                } catch (MalformedURLException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                return image;
-//            }
-//        }
-//
-//        GetImage gi = new GetImage();
-//        gi.execute(Integer.toString(id));
-//    }
-
-
-
     @Override
     public void processFinish(String output) throws JSONException {
 
@@ -197,7 +152,6 @@ public class VehiclesFragment extends Fragment implements AsyncResponse {
                 bundle.putString("COLOR", User.vehicles.get(i).getColor());
                 bundle.putInt("ID", i);
 
-//                getImage(User.vehicles.get(i).getId());
 
                 System.out.println("VehicleID: " + User.vehicles.get(i).getId());
                 System.out.println("Make: " + User.vehicles.get(i).getMake());
