@@ -195,6 +195,15 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
             currentLoc = new LatLng(User.myLocation.latitude, User.myLocation.longitude);
 
+            mSocket.connect();
+            mSocket.on("message", onNewMessage);
+            mSocket.emit("login", User.email);
+            mSocket.emit("joinRoom", User.email);
+
+            if(mSocket.connected())
+            {
+                System.out.println("&*&*&*&* " + User.email);
+            }
 
             waiting = new ProgressDialog(getContext());
             waiting.setTitle("Waiting For Buyer");
@@ -210,15 +219,6 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             waiting.show();
 
 
-            mSocket.connect();
-            mSocket.on("message", onNewMessage);
-            mSocket.emit("login", User.email);
-            mSocket.emit("joinRoom", User.email);
-
-            if(mSocket.connected())
-            {
-                System.out.println("&*&*&*&* " + User.email);
-            }
         }
         else {
             // TODO: ADD CODE FOR FINDING SCHOOLS LOCATION AND SETTING CENTRAL VIEW TO THOSE COORDINATES
@@ -415,6 +415,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+
         mSocket.disconnect();
         mSocket.off("new message", onNewMessage);
     }
@@ -439,9 +440,9 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             try {
                 jsonSend.put("LAT", newLat);
                 jsonSend.put("LONG", newLong);
-                if (mapType.equals("BOUGHT")) { // IF THIS IS A BUYER, INSERT TRANSACTION ID
-                    jsonSend.put("ID", transId);
-                }
+//                if (mapType.equals("BOUGHT")) { // IF THIS IS A BUYER, INSERT TRANSACTION ID
+//                    jsonSend.put("ID", transId);
+//                }
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

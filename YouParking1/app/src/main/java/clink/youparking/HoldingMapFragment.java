@@ -1,6 +1,7 @@
 package clink.youparking;
 
 import android.net.Uri;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ public class HoldingMapFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = new Bundle();
         bundle.putString("TYPE", "HOLDING");
+
+        System.out.println("&*&*&*&*&*&*&*&* HOLDING");
 
         mapFrag = new GMapFragment();
         mapFrag.setArguments(bundle);

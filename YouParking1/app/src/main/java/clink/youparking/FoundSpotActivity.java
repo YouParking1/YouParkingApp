@@ -30,7 +30,12 @@ public class FoundSpotActivity extends AppCompatActivity implements HoldingMapFr
         }
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_found_spot);
+
+        if (role.equals("Buyer"))
+            setContentView(R.layout.activity_found_spot);
+        else if (role.equals("Holder"))
+            setContentView(R.layout.activity_holding_spot);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -45,19 +50,19 @@ public class FoundSpotActivity extends AppCompatActivity implements HoldingMapFr
         });
 
 
-        if (role.equals("Holder")) {
-            Fragment fragment = null;
-            Class fragmentClass = null;
-            fragmentClass = HoldingMapFragment.class;
-            try {
-                fragment = (Fragment) fragmentClass.newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit();
-        }
+//        if (role.equals("Holder")) {
+//            Fragment fragment = null;
+//            Class fragmentClass = null;
+//            fragmentClass = HoldingMapFragment.class;
+//            try {
+//                fragment = (Fragment) fragmentClass.newInstance();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit();
+//        }
 
     }
 

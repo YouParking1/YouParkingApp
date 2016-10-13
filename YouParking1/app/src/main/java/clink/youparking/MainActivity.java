@@ -285,7 +285,9 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new  Intent(this, FoundSpotActivity.class);
             intent.putExtra("SpotID", -1);
             intent.putExtra("Role", "Holder");
+            intent.putExtra("TransID", "-1");
             startActivity(intent);
+            finish();
         }
         else if(operation == Operation.BUY) {
             if (output.contains("-1")) { // if spot was taken while the buyer was browsing
@@ -304,11 +306,13 @@ public class MainActivity extends AppCompatActivity
             else {
                 if (bought_spot_id != -1) {
                     int id = bought_spot_id;
+                    bought_spot_id = -1;
                     Intent intent = new Intent(this, FoundSpotActivity.class);
                     intent.putExtra("SpotID", id);
                     intent.putExtra("Role", "Buyer");
                     intent.putExtra("TransID", output);
                     startActivity(intent);
+                    finish();
                 }
             }
         }
