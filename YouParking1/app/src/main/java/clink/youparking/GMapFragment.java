@@ -164,12 +164,10 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             Bundle extras = getActivity().getIntent().getExtras();
             spotID = extras.getInt("SpotID");
 
-
             currentLoc = new LatLng(User.spots.get(spotID).getLatitude(), User.spots.get(spotID).getLongitude());
 
-
-            transId = ((FoundSpotActivity)getActivity()).getTransactionID();
-
+            transId = "10";
+            //((FoundSpotActivity)getActivity()).getTransactionID();
 
             mSocket.connect();
             mSocket.on("message", onNewMessage);
@@ -393,13 +391,6 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
 
@@ -407,6 +398,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             mGoogleApiClient.disconnect();
         }
 
+        System.out.println("DESTROYING *(*(*(*(*(*(*(*(*(*(*(*(");
         mSocket.disconnect();
         mSocket.off("new message", onNewMessage);
     }
@@ -502,8 +494,9 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                         throw new RuntimeException(e);
                     }
 
-                    if (mapType.equals("HOLDING") && waiting.isShowing()) {
-                        waiting.dismiss();
+                    if (mapType.equals("HOLDING")) {
+                        if (waiting.isShowing())
+                            waiting.dismiss();
 //                            String transId = data.getString("ID");
 //                            ((FoundSpotActivity)getActivity()).setTransactionID(transId);
                     }
