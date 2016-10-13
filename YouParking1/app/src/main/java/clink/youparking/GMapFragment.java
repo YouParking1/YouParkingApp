@@ -164,20 +164,18 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             Bundle extras = getActivity().getIntent().getExtras();
             spotID = extras.getInt("SpotID");
 
-            if (User.holdingSpot == false)
-                currentLoc = new LatLng(User.spots.get(spotID).getLatitude(), User.spots.get(spotID).getLongitude());
-            else
-                currentLoc = new LatLng(User.myLocation.latitude, User.myLocation.longitude);
-            User.holdingSpot = false;
+
+            currentLoc = new LatLng(User.spots.get(spotID).getLatitude(), User.spots.get(spotID).getLongitude());
+
 
             transId = ((FoundSpotActivity)getActivity()).getTransactionID();
 
-            if (spotID != -1) {
-                mSocket.connect();
-                mSocket.on("message", onNewMessage);
-                mSocket.emit("login", User.email);
-                mSocket.emit("joinRoom", User.spots.get(spotID).getHolder_email());
-            }
+
+            mSocket.connect();
+            mSocket.on("message", onNewMessage);
+            mSocket.emit("login", User.email);
+            mSocket.emit("joinRoom", User.spots.get(spotID).getHolder_email());
+
 
         }
         else if (mapType.equals("HOLDING")) {
@@ -319,16 +317,14 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             }
         }
         else if (mapType.equals("BOUGHT")) {
-            if (spotID != -1) {
-                holdLat = User.spots.get(spotID).getLatitude();
-                holdLong = User.spots.get(spotID).getLongitude();
+            holdLat = User.spots.get(spotID).getLatitude();
+            holdLong = User.spots.get(spotID).getLongitude();
 
-                LatLng loc = new LatLng(holdLat, holdLong);
-                mMap.addMarker(new MarkerOptions().position(loc).title("SPOT DESTINATION"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
-                initializeMap();
-            }
+            LatLng loc = new LatLng(holdLat, holdLong);
+            mMap.addMarker(new MarkerOptions().position(loc).title("SPOT DESTINATION"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
+            initializeMap();
         }
         else if (mapType.equals("HOLDING")) {
             holdLat = User.myLocation.latitude;
