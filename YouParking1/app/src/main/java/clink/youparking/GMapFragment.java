@@ -507,8 +507,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
                         if (mapType.equals("HOLDING") && waiting.isShowing()) {
                             waiting.dismiss();
-                            String transId = data.getString("ID");
-                            ((FoundSpotActivity)getActivity()).setTransactionID(transId);
+//                            String transId = data.getString("ID");
+//                            ((FoundSpotActivity)getActivity()).setTransactionID(transId);
                         }
 
                     } catch (JSONException e) {
