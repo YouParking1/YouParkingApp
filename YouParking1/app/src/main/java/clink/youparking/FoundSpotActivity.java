@@ -15,7 +15,7 @@ import org.json.JSONException;
 
 public class FoundSpotActivity extends AppCompatActivity implements HoldingMapFragment.OnFragmentInteractionListener,
         GMapFragment.OnFragmentInteractionListener, AsyncResponse{
-    int spotID = 0;
+    int spotID = -1;
     String role = "";
     String transactionID = "";
 
@@ -78,7 +78,7 @@ public class FoundSpotActivity extends AppCompatActivity implements HoldingMapFr
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     public void setTransactionID(String transactionID) {

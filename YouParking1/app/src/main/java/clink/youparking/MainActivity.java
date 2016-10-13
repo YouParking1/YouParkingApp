@@ -308,8 +308,6 @@ public class MainActivity extends AppCompatActivity
                     intent.putExtra("SpotID", id);
                     intent.putExtra("Role", "Buyer");
                     intent.putExtra("TransID", output);
-
-                    System.out.println("&*&*&*&*&*&*&*&* " + output);
                     startActivity(intent);
                 }
             }
