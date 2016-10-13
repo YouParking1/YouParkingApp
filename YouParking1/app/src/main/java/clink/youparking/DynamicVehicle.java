@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,12 +25,12 @@ import java.net.URL;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DynamicVehicleFragment.OnFragmentInteractionListener} interface
+ * {@link DynamicVehicle.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DynamicVehicleFragment#newInstance} factory method to
+ * Use the {@link DynamicVehicle#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DynamicVehicleFragment extends Fragment {
+public class DynamicVehicle extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -49,7 +47,7 @@ public class DynamicVehicleFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public DynamicVehicleFragment() {
+    public DynamicVehicle() {
         // Required empty public constructor
     }
 
@@ -59,11 +57,11 @@ public class DynamicVehicleFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DynamicVehicleFragment.
+     * @return A new instance of fragment DynamicVehicle.
      */
     // TODO: Rename and change types and number of parameters
-    public static DynamicVehicleFragment newInstance(String param1, String param2) {
-        DynamicVehicleFragment fragment = new DynamicVehicleFragment();
+    public static DynamicVehicle newInstance(String param1, String param2) {
+        DynamicVehicle fragment = new DynamicVehicle();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

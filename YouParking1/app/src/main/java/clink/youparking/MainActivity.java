@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity
         HoldSpotFragment.OnFragmentInteractionListener, FindLaterFragment.OnFragmentInteractionListener, HoldLaterFragment.OnFragmentInteractionListener,
         SignOutFragment.OnFragmentInteractionListener, GMapFragment.OnFragmentInteractionListener, HoldSpotMapFragment.OnFragmentInteractionListener,
         MapInteraction, HoldLaterMapFragment.OnFragmentInteractionListener, DynamicSpot.OnFragmentInteractionListener, AchievementFragment.OnFragmentInteractionListener,
-        DynamicVehicleFragment.OnFragmentInteractionListener, AsyncResponse {
+        DynamicVehicle.OnFragmentInteractionListener, AsyncResponse {
 
     String outputFromProcess = null;
 
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity
         BackgroundWorker backgroundWorker = new BackgroundWorker(this);
         backgroundWorker.delegate = this;
 
-        backgroundWorker.execute("hold", choice, "1", Double.toString(User.myLocation.latitude),
+        backgroundWorker.execute("hold", choice, Integer.toString(view.getId()), Double.toString(User.myLocation.latitude),
                 Double.toString(User.myLocation.longitude), holdComments);
     }
 

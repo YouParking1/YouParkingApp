@@ -1,19 +1,13 @@
 package clink.youparking;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,10 +15,6 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,10 +25,6 @@ import java.net.URL;
  * create an instance of this fragment.
  */
 public class VehiclesFragment extends Fragment implements AsyncResponse {
-
-    TextView vehicleMakeText, vehicleModelText, vehicleYearText, vehicleColorText;
-    ImageView vehicleImage;
-    private RequestHandler requestHandler;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -161,7 +147,7 @@ public class VehiclesFragment extends Fragment implements AsyncResponse {
                 System.out.println("ID: " + i);
                 System.out.println("Size of Array: " + User.vehicles.size());
 
-                Fragment fragment = new DynamicVehicleFragment();
+                Fragment fragment = new DynamicVehicle();
                 fragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().add(linearLayout.getId(), fragment).commit();
             }

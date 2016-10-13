@@ -1,7 +1,11 @@
 package clink.youparking;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,8 +15,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
@@ -33,7 +50,9 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
     private String mParam1;
     private String mParam2;
 
+    ImageView vehicleImage;
     TextView coords;
+    RadioGroup radioGroup;
     double mLat, mLong;
     EditText comments;
     Spinner tickets;
@@ -67,8 +86,9 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
+        BackgroundWorker backgroundWorker = new BackgroundWorker(getActivity());
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute("getVehicles");
     }
 
     @Override
@@ -80,16 +100,76 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        vehicleImage = (ImageView)getView().findViewById(R.id.imageVehicleChoice);
+        holdBtn = (Button)getView().findViewById(R.id.holdBtn);
+
+        radioGroup = (RadioGroup)getView().findViewById(R.id.populate_vehicle_choices);
+        radioGroup.clearCheck();
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton rb = (RadioButton) group.findViewById(checkedId);
+                if(rb != null && checkedId > -1){
+                    getImage(User.vehicles.get(checkedId).getId());
+                    vehicleImage.setVisibility(View.VISIBLE);
+                    holdBtn.setId(User.vehicles.get(checkedId).getId());
+                }
+            }
+        });
+
         coords = (TextView) getView().findViewById(R.id.showCoords);
         if (User.myLocation != null)
-            coords.setText("COORDINATES ARE " + Double.toString(User.myLocation.latitude) + " " + Double.toString(User.myLocation.longitude));
+            coords.setText("COORDINATES ARE " + Double.toString(User.myLocation.latitude) + " " + Double.toString(User              .myLocation.longitude));
 
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
 
-        super.onViewCreated(view, savedInstanceState);
+    private void getImage(int id) {
+        class GetImage extends AsyncTask<String,Void,Bitmap> {
+            ProgressDialog loading;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(getActivity(), "Uploading...", null,true,true);
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap b) {
+                super.onPostExecute(b);
+                loading.dismiss();
+                vehicleImage.setImageBitmap(b);
+            }
+
+            @Override
+            protected Bitmap doInBackground(String... params) {
+                String id = params[0];
+                String add = "http://www.troyparking.com/getImage.php?id="+id;
+
+                System.out.println("Link with id:" + add);
+
+                URL url = null;
+                Bitmap image = null;
+                try {
+                    url = new URL(add);
+                    image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return image;
+            }
+        }
+
+        GetImage gi = new GetImage();
+        gi.execute(Integer.toString(id));
     }
 
     @Override
@@ -125,7 +205,47 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
     }
 
     @Override
-    public void processFinish(String output) {
+    public void processFinish(String output) throws JSONException {
 
+        JSONArray jsonArray = new JSONArray(output);
+
+        if (!User.vehicles.isEmpty()) {
+            User.vehicles.clear();
+        }
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            User.vehicles.add(new Vehicles (jsonObject.getInt("id"), jsonObject.getString("Make"),
+                    jsonObject.getString("Model"), jsonObject.getInt("Year"), jsonObject.getString("Color")));
+        }
+
+        RadioGroup radioGroup = (RadioGroup) getActivity().findViewById(R.id.populate_vehicle_choices);
+        radioGroup.setOrientation(LinearLayout.VERTICAL);
+
+        if (User.vehicles.size() > 0) {
+            for (int i = 0; i < User.vehicles.size(); i++) {
+
+                User.id = User.vehicles.get(i).getId();
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("VEHICLEID", User.vehicles.get(i).getId());
+                bundle.putString("MAKE", User.vehicles.get(i).getMake());
+                bundle.putString("MODEL", User.vehicles.get(i).getModel());
+                bundle.putInt("YEAR", User.vehicles.get(i).getYear());
+                bundle.putInt("ID", i);
+
+                System.out.println("VehicleID: " + User.vehicles.get(i).getId());
+                System.out.println("Make: " + User.vehicles.get(i).getMake());
+                System.out.println("Model: " + User.vehicles.get(i).getModel());
+                System.out.println("Year: " + User.vehicles.get(i).getYear());
+                System.out.println("ID: " + i);
+
+
+                RadioButton rb = new RadioButton(getContext());
+                rb.setId(i);
+                rb.setText(User.vehicles.get(i).getMake() + " " + User.vehicles.get(i).getModel() + " " + User.vehicles.get(i).getYear());
+                radioGroup.addView(rb);
+            }
+        }
     }
 }
