@@ -200,11 +200,6 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             mSocket.emit("login", User.email);
             mSocket.emit("joinRoom", User.email);
 
-            if(mSocket.connected())
-            {
-                System.out.println("&*&*&*&* " + User.email);
-            }
-
             waiting = new ProgressDialog(getContext());
             waiting.setTitle("Waiting For Buyer");
             waiting.setMessage("Please wait while we find a buyer...");
@@ -382,7 +377,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onStart() {
-        if (mapType.equals("HOLD") || mapType.equals("BOUGHT"))
+        if (mapType.equals("HOLD") || mapType.equals("BOUGHT") || mapType.equals("HOLDING"))
             mGoogleApiClient.connect();
         super.onStart();
     }
