@@ -72,6 +72,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     private String room = null; // FOR USE WITH REAL TIME NAVIGATION TRACKING
 
     private String transId = "";
+    private boolean sentId = false;
 
     private int spotID = -1;
 
@@ -352,7 +353,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             if (output.contains("0")) {
 
             } else {
-                
+
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 //getActivity().finish();
@@ -495,18 +496,20 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                     try {
                         newLat = data.getDouble("LAT");
                         newLong = data.getDouble("LONG");
-
-
+                        if (mapType.equals("HOLDING") && !sentId)
+                            transId = data.getString("ID");
 
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
 
-                    if (mapType.equals("HOLDING")) {
-                        if (waiting.isShowing())
+                    if (!sentId) {
+                        sentId = true;
+
+                        if (waiting != null && waiting.isShowing()) {
+                            ((FoundSpotActivity)getActivity()).setTransactionID(transId);
                             waiting.dismiss();
-                        //String transId = data.getString("ID");
-                        //((FoundSpotActivity)getActivity()).setTransactionID(transId);
+                        }
                     }
 
                     if (mMap != null) {
