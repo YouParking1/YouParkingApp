@@ -352,9 +352,10 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             if (output.contains("0")) {
 
             } else {
+                
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
-                getActivity().finish();
+                //getActivity().finish();
             }
         }
     }
@@ -397,6 +398,20 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mSocket != null) {
+            if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.disconnect();
+            }
+
+            mSocket.disconnect();
+            mSocket.off("new message", onNewMessage);
+        }
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -407,12 +422,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     public void onDestroy() {
         super.onDestroy();
 
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
 
-        mSocket.disconnect();
-        mSocket.off("new message", onNewMessage);
     }
 
     @Override
@@ -486,15 +496,17 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                         newLat = data.getDouble("LAT");
                         newLong = data.getDouble("LONG");
 
-                        if (mapType.equals("HOLDING")) {
-                            if (waiting.isShowing())
-                                waiting.dismiss();
-                            String transId = data.getString("ID");
-                            ((FoundSpotActivity)getActivity()).setTransactionID(transId);
-                        }
+
 
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
+                    }
+
+                    if (mapType.equals("HOLDING")) {
+                        if (waiting.isShowing())
+                            waiting.dismiss();
+                        //String transId = data.getString("ID");
+                        //((FoundSpotActivity)getActivity()).setTransactionID(transId);
                     }
 
                     if (mMap != null) {
