@@ -49,21 +49,6 @@ public class FoundSpotActivity extends AppCompatActivity implements HoldingMapFr
             }
         });
 
-
-//        if (role.equals("Holder")) {
-//            Fragment fragment = null;
-//            Class fragmentClass = null;
-//            fragmentClass = HoldingMapFragment.class;
-//            try {
-//                fragment = (Fragment) fragmentClass.newInstance();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//            FragmentManager fragmentManager = getSupportFragmentManager();
-//            fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit();
-//        }
-
     }
 
     @Override

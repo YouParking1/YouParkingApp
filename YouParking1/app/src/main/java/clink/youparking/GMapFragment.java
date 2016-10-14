@@ -53,7 +53,7 @@ import java.net.URISyntaxException;
  * create an instance of this fragment.
  */
 public class GMapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-            GoogleApiClient.OnConnectionFailedListener, LocationListener{
+            GoogleApiClient.OnConnectionFailedListener, AsyncResponse, LocationListener{
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -81,6 +81,9 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
     JSONObject jsonSend;
     private PolylineOptions mPolylineOptions;
+
+    enum Operation { CANCEL, NONE }
+    Operation operation = Operation.NONE;
 
     private Socket mSocket;
     {
@@ -166,8 +169,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
             currentLoc = new LatLng(User.spots.get(spotID).getLatitude(), User.spots.get(spotID).getLongitude());
 
-            transId = "10";
-            //((FoundSpotActivity)getActivity()).getTransactionID();
+            transId = ((FoundSpotActivity)getActivity()).getTransactionID();
 
             mSocket.connect();
             mSocket.on("message", onNewMessage);
@@ -203,8 +205,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             waiting.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
+                    cancelHold();
                 }
             });
             waiting.show();
@@ -217,11 +218,19 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
     }
 
+    private void cancelHold() {
+        operation = Operation.CANCEL;
+
+        BackgroundWorker backgroundWorker = new BackgroundWorker(getContext());
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute("cancelHold", User.email);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view =  inflater.inflate(R.layout.fragment_gmap, container, false);
 
         return view;
@@ -336,16 +345,20 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void processFinish(String output) throws JSONException {
+
+        if (operation == Operation.CANCEL) {
+            if (output.contains("0")) {
+
+            } else {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        }
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -398,20 +411,10 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             mGoogleApiClient.disconnect();
         }
 
-        System.out.println("DESTROYING *(*(*(*(*(*(*(*(*(*(*(*(");
         mSocket.disconnect();
         mSocket.off("new message", onNewMessage);
     }
 
-
-    /**
-     *
-     * onLocationChanged will take users location change, format to JSONObject and send data to
-     * Socket.IO
-     *
-     *
-     * @param location
-     */
     @Override
     public void onLocationChanged(Location location) {
         jsonSend = new JSONObject();
@@ -423,17 +426,16 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             try {
                 jsonSend.put("LAT", newLat);
                 jsonSend.put("LONG", newLong);
-//                if (mapType.equals("BOUGHT")) { // IF THIS IS A BUYER, INSERT TRANSACTION ID
-//                    jsonSend.put("ID", transId);
-//                }
+                if (mapType.equals("BOUGHT")) {
+                    jsonSend.put("ID", transId);
+                }
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
 
             currentLoc = new LatLng(newLat, newLong);
 
-            mSocket.emit("message", jsonSend); //EMIT NEW LOCATION AS JSON
-            //realTimeMap(newLat, newLong);
+            mSocket.emit("message", jsonSend);
         }
     }
 
@@ -464,9 +466,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
         mPolylineOptions.color(Color.BLUE).width(10);
     }
 
-    /**
-     * If location arrives from Socket.IO
-     */
+
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
 
         @Override
@@ -486,19 +486,15 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                         newLat = data.getDouble("LAT");
                         newLong = data.getDouble("LONG");
 
-
-
-
+                        if (mapType.equals("HOLDING")) {
+                            if (waiting.isShowing())
+                                waiting.dismiss();
+                            String transId = data.getString("ID");
+                            ((FoundSpotActivity)getActivity()).setTransactionID(transId);
+                        }
 
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
-                    }
-
-                    if (mapType.equals("HOLDING")) {
-                        if (waiting.isShowing())
-                            waiting.dismiss();
-//                            String transId = data.getString("ID");
-//                            ((FoundSpotActivity)getActivity()).setTransactionID(transId);
                     }
 
                     if (mMap != null) {
