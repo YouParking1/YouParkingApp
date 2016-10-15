@@ -14,11 +14,13 @@
             android:id="@+id/find_now_map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="300sp" />
+            android:layout_height="match_parent" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentBottom="true"
             android:background="@color/colorPrimaryDark">
             <ScrollView
                 android:layout_width="match_parent"
@@ -55,6 +57,8 @@
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
+
+
 
 
     </LinearLayout>
