@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("Role", "Holder");
             intent.putExtra("TransID", "-1");
             startActivity(intent);
-            //finish();
+            finish();
         }
         else if(operation == Operation.BUY) {
             if (output.contains("-1")) { // if spot was taken while the buyer was browsing
@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity
                     intent.putExtra("Role", "Buyer");
                     intent.putExtra("TransID", output);
                     startActivity(intent);
-                    //finish();
+                    finish();
                 }
             }
         }
