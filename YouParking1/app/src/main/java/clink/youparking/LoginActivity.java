@@ -89,7 +89,11 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         editor.putString("first_name", User.fName);
         editor.putString("last_name", User.lName);
         editor.putString("University", User.school);
-        editor.putString("Password", passwordEt.getText().toString());
+
+        if (sharedPref.getString("Password", "").length() < 1) {
+            editor.putString("Password", passwordEt.getText().toString());
+        }
+
         editor.commit();
 
         if (active.equals("false")) {
