@@ -58,7 +58,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         if (User.time < phpTime2)
         {
             Context context = getActivity().getApplicationContext();
-            CharSequence text = "Must be at least two hours later.";
+            CharSequence text = "Departure must be at least 2 hours from now.";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
