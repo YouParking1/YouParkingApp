@@ -152,26 +152,26 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
         mapType = getArguments().getString("TYPE");
 
         if (mapType.equals("HOLD")) { //IF USER IS HOLDING A SPOT
-            if (User.mGoogleApiClient == null) {
+            //if (User.mGoogleApiClient == null) {
                 User.mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                         .addConnectionCallbacks(this)
                         .addOnConnectionFailedListener(this)
                         .addApi(LocationServices.API)
                         .build();
-            }
+            //}
             mLocationRequest = LocationRequest.create()
                     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                     .setInterval(10 * 1000)
                     .setFastestInterval(1 * 1000);
         }
         else if (mapType.equals("BOUGHT")) {
-            if (User.mGoogleApiClient == null) {
+            //if (User.mGoogleApiClient == null) {
                 User.mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                         .addConnectionCallbacks(this)
                         .addOnConnectionFailedListener(this)
                         .addApi(LocationServices.API)
                         .build();
-            }
+            //}
             mLocationRequest = LocationRequest.create()
                     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                     .setInterval(10 * 1000)
@@ -193,13 +193,13 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
         }
         else if (mapType.equals("HOLDING")) {
-            if (User.mGoogleApiClient == null) {
+            //if (User.mGoogleApiClient == null) {
                 User.mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                         .addConnectionCallbacks(this)
                         .addOnConnectionFailedListener(this)
                         .addApi(LocationServices.API)
                         .build();
-            }
+            //}
             mLocationRequest = LocationRequest.create()
                     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                     .setInterval(10 * 1000)
