@@ -100,6 +100,14 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 //            }
 //    }
 
+    {
+        try {
+            User.mSocket = IO.socket("http://108.167.99.14:88");
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";

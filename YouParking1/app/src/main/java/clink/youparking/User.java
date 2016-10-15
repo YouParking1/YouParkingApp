@@ -38,13 +38,7 @@ public class User {
     public static boolean holdingSpot = false;
 
     public static Socket mSocket;
-    {
-        try {
-            mSocket = IO.socket("http://108.167.99.14:88");
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
     public static GoogleApiClient mGoogleApiClient;
 
