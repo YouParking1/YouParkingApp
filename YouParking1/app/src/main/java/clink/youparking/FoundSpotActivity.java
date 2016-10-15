@@ -62,6 +62,16 @@ public class FoundSpotActivity extends AppCompatActivity implements HoldingMapFr
     }
 
     public void endTransaction(View view) {
+        if (User.mSocket != null) {
+            if (User.mGoogleApiClient != null && User.mGoogleApiClient.isConnected()) {
+                User.mGoogleApiClient.disconnect();
+            }
+
+            User.mSocket.disconnect();
+            User.mSocket.off();
+            //User.mSocket.off("new message", onNewMessage);
+        }
+
         BackgroundWorker backgroundWorker = new BackgroundWorker(this);
         backgroundWorker.delegate = this;
         backgroundWorker.execute("BuyNowComplete", transactionID);

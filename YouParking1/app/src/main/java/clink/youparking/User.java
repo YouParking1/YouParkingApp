@@ -1,7 +1,11 @@
 package clink.youparking;
 
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 /**
@@ -32,5 +36,16 @@ public class User {
     public static int id = 0;
 
     public static boolean holdingSpot = false;
+
+    public static Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket("http://108.167.99.14:88");
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static GoogleApiClient mGoogleApiClient;
 
 }

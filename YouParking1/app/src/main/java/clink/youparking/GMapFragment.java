@@ -56,7 +56,12 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             GoogleApiClient.OnConnectionFailedListener, AsyncResponse, LocationListener{
 
     private GoogleMap mMap;
-    private GoogleApiClient mGoogleApiClient;
+
+
+   // private GoogleApiClient mGoogleApiClient;
+
+
+
     private Location mLastLocation;
 
     private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 1;
@@ -86,14 +91,14 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     enum Operation { CANCEL, NONE }
     Operation operation = Operation.NONE;
 
-    private Socket mSocket;
-    {
-            try {
-                mSocket = IO.socket("http://108.167.99.14:88");
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
-    }
+//    private Socket mSocket;
+//    {
+//            try {
+//                mSocket = IO.socket("http://108.167.99.14:88");
+//            } catch (URISyntaxException e) {
+//                throw new RuntimeException(e);
+//            }
+//    }
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -139,8 +144,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
         mapType = getArguments().getString("TYPE");
 
         if (mapType.equals("HOLD")) { //IF USER IS HOLDING A SPOT
-            if (mGoogleApiClient == null) {
-                mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+            if (User.mGoogleApiClient == null) {
+                User.mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                         .addConnectionCallbacks(this)
                         .addOnConnectionFailedListener(this)
                         .addApi(LocationServices.API)
@@ -152,8 +157,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
                     .setFastestInterval(1 * 1000);
         }
         else if (mapType.equals("BOUGHT")) {
-            if (mGoogleApiClient == null) {
-                mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+            if (User.mGoogleApiClient == null) {
+                User.mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                         .addConnectionCallbacks(this)
                         .addOnConnectionFailedListener(this)
                         .addApi(LocationServices.API)
@@ -172,16 +177,16 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
             transId = ((FoundSpotActivity)getActivity()).getTransactionID();
 
-            mSocket.connect();
-            mSocket.on("message", onNewMessage);
-            mSocket.emit("login", User.email);
-            mSocket.emit("joinRoom", User.spots.get(spotID).getHolder_email());
+            User.mSocket.connect();
+            User.mSocket.on("message", onNewMessage);
+            User.mSocket.emit("login", User.email);
+            User.mSocket.emit("joinRoom", User.spots.get(spotID).getHolder_email());
 
 
         }
         else if (mapType.equals("HOLDING")) {
-            if (mGoogleApiClient == null) {
-                mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+            if (User.mGoogleApiClient == null) {
+                User.mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                         .addConnectionCallbacks(this)
                         .addOnConnectionFailedListener(this)
                         .addApi(LocationServices.API)
@@ -194,10 +199,10 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
             currentLoc = new LatLng(User.myLocation.latitude, User.myLocation.longitude);
 
-            mSocket.connect();
-            mSocket.on("message", onNewMessage);
-            mSocket.emit("login", User.email);
-            mSocket.emit("joinRoom", User.email);
+            User.mSocket.connect();
+            User.mSocket.on("message", onNewMessage);
+            User.mSocket.emit("login", User.email);
+            User.mSocket.emit("joinRoom", User.email);
 
             waiting = new ProgressDialog(getContext());
             waiting.setTitle("Waiting For Buyer");
@@ -277,15 +282,15 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSION_ACCESS_COARSE_LOCATION);
         }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        LocationServices.FusedLocationApi.requestLocationUpdates(User.mGoogleApiClient, mLocationRequest, this);
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(User.mGoogleApiClient);
         myLat = mLastLocation.getLatitude();
         myLong = mLastLocation.getLongitude();
         if (mapType.equals("BOUGHT") || mapType.equals("HOLDING")) {
             //IF BOUGHT OR HOLDING, DON'T DISABLE LOCATION UPDATES
         }
         else {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            LocationServices.FusedLocationApi.removeLocationUpdates(User.mGoogleApiClient, this);
         }
         setCurrentLoc();
     }
@@ -387,7 +392,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onStart() {
         if (mapType.equals("HOLD") || mapType.equals("BOUGHT") || mapType.equals("HOLDING"))
-            mGoogleApiClient.connect();
+            User.mGoogleApiClient.connect();
         super.onStart();
     }
 
@@ -401,14 +406,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onPause() {
         super.onPause();
-        if (mSocket != null) {
-            if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-                mGoogleApiClient.disconnect();
-            }
 
-            mSocket.disconnect();
-            mSocket.off("new message", onNewMessage);
-        }
 
     }
 
@@ -446,7 +444,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
             currentLoc = new LatLng(newLat, newLong);
 
-            mSocket.emit("message", jsonSend);
+            User.mSocket.emit("message", jsonSend);
         }
     }
 
