@@ -65,10 +65,12 @@ public class FoundSpotActivity extends AppCompatActivity implements HoldingMapFr
         if (User.mSocket != null) {
             if (User.mGoogleApiClient != null && User.mGoogleApiClient.isConnected()) {
                 User.mGoogleApiClient.disconnect();
+                User.mGoogleApiClient = null;
             }
 
             User.mSocket.disconnect();
             User.mSocket.off();
+            User.mSocket = null;
             //User.mSocket.off("new message", onNewMessage);
         }
 

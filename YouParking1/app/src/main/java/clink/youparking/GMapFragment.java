@@ -399,7 +399,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onStart() {
-        if (mapType.equals("HOLD") || mapType.equals("BOUGHT") || mapType.equals("HOLDING"))
+        //if (mapType.equals("HOLD") || mapType.equals("BOUGHT") || mapType.equals("HOLDING"))
             User.mGoogleApiClient.connect();
         super.onStart();
     }

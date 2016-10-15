@@ -39,7 +39,6 @@ public class User {
 
     public static Socket mSocket;
 
-
     public static GoogleApiClient mGoogleApiClient;
 
 }
