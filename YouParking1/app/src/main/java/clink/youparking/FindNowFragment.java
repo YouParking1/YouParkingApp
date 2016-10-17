@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,6 +99,10 @@ public class FindNowFragment extends Fragment implements AsyncResponse {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ChooseVehicleDialog dialog = new ChooseVehicleDialog();
+        dialog.show(getActivity().getFragmentManager(), "TAG");
+
         BackgroundWorker backgroundWorker = new BackgroundWorker(getContext());
         backgroundWorker.delegate = this;
         backgroundWorker.execute("findnow");

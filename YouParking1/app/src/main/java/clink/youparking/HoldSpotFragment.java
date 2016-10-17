@@ -105,7 +105,7 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
         vehicleImage = (ImageView)getView().findViewById(R.id.imageVehicleChoice);
         holdBtn = (Button)getView().findViewById(R.id.holdBtn);
 
-        radioGroup = (RadioGroup)getView().findViewById(R.id.populate_vehicle_choices);
+        radioGroup = (RadioGroup)getView().findViewById(R.id.populate_vehicle_choices_hold);
         radioGroup.clearCheck();
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -219,7 +219,7 @@ public class HoldSpotFragment extends Fragment implements AsyncResponse {
                     jsonObject.getString("Model"), jsonObject.getInt("Year"), jsonObject.getString("Color")));
         }
 
-        RadioGroup radioGroup = (RadioGroup) getActivity().findViewById(R.id.populate_vehicle_choices);
+        RadioGroup radioGroup = (RadioGroup) getActivity().findViewById(R.id.populate_vehicle_choices_hold);
         radioGroup.setOrientation(LinearLayout.VERTICAL);
 
         if (User.vehicles.size() > 0) {
