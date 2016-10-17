@@ -15,7 +15,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     final Calendar c = Calendar.getInstance();
     private long phpTime = 0;
-    final int twoHoursLater = 7200000;
+    final int twoHoursLater = 7200;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -42,27 +42,28 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         tv.setText(String.format("%02d:%02d %s", hour == 0 ? 12 : hour,
                 minute, hourOfDay < 12 ? "AM" : "PM"));
 
-        long diff = System.currentTimeMillis() - time;
-        time += diff;
+        long nowTime = System.currentTimeMillis()/1000;
+        long nowTimePlusTwo = nowTime + twoHoursLater;
+
         phpTime = time/1000;
         User.time = phpTime;
 
-        long time2 = calendar.getTimeInMillis();
-        long diff2 = (System.currentTimeMillis() - time2) + twoHoursLater;
-        time2 += diff2;
-        long phpTime2 = time2/1000;
+        System.out.println("Set Time: " + User.time);
+        System.out.println("Two Hours Later Time: " + nowTimePlusTwo);
 
-        System.out.println("User Time: " + User.time);
-        System.out.println("Two Hours Later Time: " + phpTime2);
-
-        if (User.time < phpTime2)
+        if (phpTime <= nowTimePlusTwo)
         {
+            ((MainActivity)getActivity()).setValidTime(false);
+
             Context context = getActivity().getApplicationContext();
             CharSequence text = "Departure must be at least 2 hours from now.";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
+        }
+        else {
+            ((MainActivity)getActivity()).setValidTime(true);
         }
     }
 
