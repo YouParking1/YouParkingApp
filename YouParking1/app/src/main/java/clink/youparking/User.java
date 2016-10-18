@@ -18,6 +18,7 @@ public class User {
     public static String fName = null;
     public static String lName = null;
     public static int numCars = 0;
+    public static boolean isLoggedIn = false;
 
     public static int percentage = 0;
     public static int spotsHeld = 0;

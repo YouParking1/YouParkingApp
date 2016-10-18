@@ -62,6 +62,7 @@ public class SignOutFragment extends Fragment {
         editor.clear().commit();
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
+        User.isLoggedIn = false;
 
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {

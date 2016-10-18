@@ -1,14 +1,18 @@
 package clink.youparking;
 
+import android.Manifest;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     Operation operation = Operation.NONE;
 
     private boolean validHoldLaterTime = false;
+    private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +89,17 @@ public class MainActivity extends AppCompatActivity
 
         TextView numTickets = (TextView)hView.findViewById(R.id.numTickets);
         numTickets.setText(Integer.toString(User.points));
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSION_ACCESS_COARSE_LOCATION);
+        }
+
+        if(User.holdingSpot)
+        {
+            isHolding();
+        }
     }
 
     @Override
@@ -187,6 +203,15 @@ public class MainActivity extends AppCompatActivity
     public void finishHoldLater(View view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, new HoldLaterFragment()).commit();
+    }
+
+    public void isHolding()
+    {
+        Intent intent = new  Intent(this, FoundSpotActivity.class);
+        intent.putExtra("SpotID", -1);
+        intent.putExtra("Role", "Holder");
+        intent.putExtra("TransID", "-1");
+        startActivity(intent);
     }
 
     public void deleteVehicle(View view)

@@ -18,7 +18,6 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     EditText emailEt, passwordEt;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         User.lName = strLName;
         String active = jsonObject.optString("Active");
 
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("PREF_NAME", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("Username", User.email);
         editor.putString("first_name", User.fName);
@@ -111,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         }
         else
         {
+            User.isLoggedIn = true;
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
