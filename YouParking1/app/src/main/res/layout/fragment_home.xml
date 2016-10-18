@@ -1,34 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/bg"
+    android:orientation="vertical">
 
     <ScrollView
+        android:id="@+id/login_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true">
+    </ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/welcomeText"
+        android:text="Welcome, User User"
+        android:textSize="25sp"
+        android:textColor="#000"
+        android:layout_marginTop="18dp"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvSpots"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        card_view:cardCornerRadius="2dp"
+        card_view:contentPadding="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:elevation="1000dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/welcomeText"
+        android:layout_centerHorizontal="true">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".MainActivity"
-            android:layout_gravity="start"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:id="@+id/welcomeText"
-                android:text="Welcome, User User"
-                android:textSize="25sp"
-                android:textColor="#000"
-                android:layout_marginTop="15dp"
-                android:layout_gravity="center_horizontal"
-                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -38,30 +61,13 @@
                 android:id="@+id/spotsText"
                 android:textSize="25sp"
                 android:textColor="#000"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center_horizontal" />
-
-
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-                <!--android:text="@string/home_spots_number"-->
-                <!--android:id="@+id/spotsAvailable"-->
-                <!--android:layout_marginTop="10dp"-->
-                <!--android:textColor="#000"-->
-                <!--android:textSize="35sp"-->
-                <!--android:background="@drawable/spotsborder"-->
-                <!--android:padding="16sp"-->
-                <!--android:layout_gravity="center_horizontal" />-->
+                android:layout_gravity="center" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_gravity="center">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -69,7 +75,8 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Find Now: "
                     android:id="@+id/textView10"
-                    android:textColor="#000"/>
+                    android:textColor="#000" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,15 +85,12 @@
                     android:id="@+id/find_now_spots_available"
                     android:gravity="center_horizontal"
                     android:textColor="#000"/>
-
             </LinearLayout>
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp">
-
+                android:layout_gravity="center">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -102,8 +106,28 @@
                     android:id="@+id/find_later_spots_available"
                     android:gravity="center_horizontal"
                     android:textColor="#000"/>
-
             </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvStatistic"
+        android:layout_width="fill_parent"
+        android:layout_height="170dp"
+        android:layout_gravity="center"
+        card_view:cardCornerRadius="2dp"
+        card_view:contentPadding="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:elevation="1000dp"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/cvSpots"
+        android:layout_centerHorizontal="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -113,16 +137,13 @@
                 android:id="@+id/statsText"
                 android:textSize="25sp"
                 android:textColor="#000"
-                android:layout_marginTop="25dp"
                 android:layout_gravity="center_horizontal" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp">
-
+                android:layout_gravity="center">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -138,14 +159,13 @@
                     android:id="@+id/stat_spots_held"
                     android:gravity="center_horizontal"
                     android:textColor="#000"/>
-
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp">
+                android:gravity="center_horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -168,8 +188,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp">
+                android:gravity="center_horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -192,8 +211,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp">
+                android:gravity="center_horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -216,8 +234,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp">
+                android:gravity="center_horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -245,43 +262,62 @@
 
 
             </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-            <TextView
-                android:id="@+id/achievementText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/home_achievements_text"
-                android:textColor="#000"
-                android:textSize="25sp"
-                android:layout_marginTop="25dp"
-                android:layout_gravity="center_horizontal|bottom"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/cvStatistic"
+        android:layout_alignParentEnd="true"
+        android:weightSum="1">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvAchievements"
+            android:layout_width="fill_parent"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            card_view:cardCornerRadius="2dp"
+            card_view:contentPadding="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:elevation="1000dp"
+            android:layout_marginTop="19dp"
+            android:layout_below="@+id/cvStatistic"
+            android:layout_alignEnd="@+id/cvStatistic"
+            android:layout_weight="1.53">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:visibility="visible">
+                android:orientation="vertical">
 
-                <include layout="@layout/achievement1" />
-                <include layout="@layout/achievement2" />
-                <include layout="@layout/achievement3" />
+                <TextView
+                    android:id="@+id/achievementText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/home_achievements_text"
+                    android:textColor="#000"
+                    android:textSize="25sp"
+                    android:layout_gravity="center_horizontal"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    android:visibility="visible">
+
+                    <include layout="@layout/achievement1" />
+                    <include layout="@layout/achievement2" />
+                    <include layout="@layout/achievement3"
+                        android:layout_width="0dp" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:gravity="center_horizontal"-->
-                <!--android:layout_marginTop="10dp"-->
-                <!--android:visibility="visible">-->
-
-                <!--<include layout="@layout/achievement4" />-->
-            <!--</LinearLayout>-->
-
-        </LinearLayout>
-    </ScrollView>
-
-</android.support.v4.widget.DrawerLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</RelativeLayout>
