@@ -112,9 +112,6 @@ public class UploadVehicleActivity extends AppCompatActivity implements AsyncRes
             @Override
             protected String doInBackground(Bitmap... params) {
 
-                System.out.println("&&&&&&&&&&&&&&&&&&&");
-                System.out.println("ID IN DO IN BACKGROUND: " + id);
-
                 Bitmap bitmap = params[0];
                 String uploadImage = getStringImage(bitmap);
 

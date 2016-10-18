@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity
 
     Operation operation = Operation.NONE;
 
+    private boolean validHoldLaterTime = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -233,15 +235,29 @@ public class MainActivity extends AppCompatActivity
 
     public void onHoldLater(View view)
     {
-        EditText editText = (EditText) findViewById(R.id.holdSpotLaterComments);
-        String holdLaterComments = editText.getText().toString();
+        if (User.time != 0 && validHoldLaterTime) {
 
-        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
-        backgroundWorker.delegate = this;
+            Spinner spinner = (Spinner) findViewById(R.id.holdPointsSpinner);
+            String points = spinner.getSelectedItem().toString();
 
-        //TODO: Travis Clinkscales - Change the second argument to something else
-        backgroundWorker.execute("hold_later", "bid", Long.toString(User.time), "1", Double.toString(User.myLocation.latitude),
-                Double.toString(User.myLocation.longitude), holdLaterComments);
+            EditText editText = (EditText) findViewById(R.id.holdSpotLaterComments);
+            String holdLaterComments = editText.getText().toString();
+
+            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+            backgroundWorker.delegate = this;
+
+            //TODO: Travis Clinkscales - Change the second argument to something else
+            backgroundWorker.execute("hold_later", points, Long.toString(User.time), "1", Double.toString(User.myLocation.latitude),
+                    Double.toString(User.myLocation.longitude), holdLaterComments);
+
+            User.time = 0;
+        }
+        else if (User.time == 0){
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(this, "Please choose a departure time.", duration);
+            toast.show();
+        }
     }
 
     public void onSetTimeButtonClicked(View view){
@@ -385,6 +401,10 @@ public class MainActivity extends AppCompatActivity
         GMapFragment gmap = (GMapFragment) getSupportFragmentManager().getFragments().get(i).getChildFragmentManager()
                 .getFragments().get(j);
         gmap.setToSpotClicked(view.getId());
+    }
+
+    public void setValidTime(Boolean bool) {
+        validHoldLaterTime = bool;
     }
 
 

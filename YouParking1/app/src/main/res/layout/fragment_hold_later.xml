@@ -43,6 +43,26 @@
                 android:layout_height="wrap_content"
                 android:onClick="onSetTimeButtonClicked"
                 android:text="Set Time" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Minimum tickets you'll accept for this spot"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="5dp"/>
+            <Spinner
+                android:id="@+id/holdPointsSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:prompt="@string/points_prompt"
+                android:background="@android:drawable/btn_dropdown"
+                android:entries="@array/points_array"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+            </Spinner>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -233,6 +233,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     private void cancelHold() {
+
+
         operation = Operation.CANCEL;
 
         BackgroundWorker backgroundWorker = new BackgroundWorker(getContext());
@@ -366,6 +368,17 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Google
             if (output.contains("0")) {
 
             } else {
+                if (User.mSocket != null) {
+                    if (User.mGoogleApiClient != null && User.mGoogleApiClient.isConnected()) {
+                        User.mGoogleApiClient.disconnect();
+                        User.mGoogleApiClient = null;
+                    }
+
+                    User.mSocket.disconnect();
+                    User.mSocket.off();
+                    User.mSocket = null;
+                    //User.mSocket.off("new message", onNewMessage);
+                }
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);

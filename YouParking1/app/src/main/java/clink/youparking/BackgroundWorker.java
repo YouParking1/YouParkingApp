@@ -613,6 +613,7 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
         alertDialog.show();
         try {
             delegate.processFinish(result);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
